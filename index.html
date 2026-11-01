@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BassDrive – Car Audio & Electronics Experts</title>
+<meta name="description" content="BassDrive connects car owners with skilled car electronics and sound system technicians: head units, speakers, amps, wiring, cameras and lights.">
+<style>
+:root{--bg:#0b0b0d;--card:#16161a;--line:#2a2a31;--text:#f2f2f4;--mute:#a0a0aa;--red:#e11d2e;--amber:#f5a524}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,11,13,.95);z-index:5}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
+.brand{font-weight:800;font-size:1.3rem}.brand span{color:var(--red)}
+nav a{margin-left:18px;color:var(--mute);font-size:.95rem}nav a:hover{color:var(--amber)}
+.hero{padding:80px 0 60px;text-align:center}
+.hero h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.1}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero p{color:var(--mute);max-width:560px;margin:18px auto 28px}
+.btn{display:inline-block;background:var(--red);color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;border:0;cursor:pointer;font-size:1rem}
+.btn.alt{background:transparent;border:1px solid var(--amber);color:var(--amber);margin-left:8px}
+section{padding:50px 0}
+h2{font-size:1.7rem;margin-bottom:24px}h2 span{color:var(--amber)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.card h3{color:var(--amber);margin-bottom:6px}.card p{color:var(--mute);font-size:.92rem}
+.num{color:var(--red);font-weight:800;font-size:1.6rem}
+form{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:12px}
+input,select,textarea{width:100%;background:#0f0f12;border:1px solid var(--line);color:var(--text);padding:11px;border-radius:8px;font:inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--amber)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+footer{border-top:1px solid var(--line);padding:24px 0;text-align:center;color:var(--mute);font-size:.9rem}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="#">Bass<span>Drive</span></a>
+<nav><a href="#services">Services</a><a href="#how">How it works</a><a href="#book">Book</a><a href="#join">Join</a></nav></div></header>
+
+<div class="wrap hero">
+<h1>Find a trusted <em>car audio</em> expert near you</h1>
+<p>Dealers can't fix it? BassDrive connects car owners with skilled sound system and electronics technicians.</p>
+<a class="btn" href="#book">Book a Fix</a><a class="btn alt" href="#join">Join as Expert</a>
+</div>
+
+<section id="services"><div class="wrap"><h2>What we <span>fix</span></h2>
+<div class="grid">
+<div class="card"><h3>Head Units</h3><p>Tape decks, Android &amp; touchscreen stereos.</p></div>
+<div class="card"><h3>Speakers</h3><p>Installation, upgrades, tuning.</p></div>
+<div class="card"><h3>Amps &amp; Subs</h3><p>Bass setups done right.</p></div>
+<div class="card"><h3>Wiring</h3><p>Faults, shorts, clean rewiring.</p></div>
+<div class="card"><h3>Cameras</h3><p>Reverse, dash and 360° cameras.</p></div>
+<div class="card"><h3>Lights</h3><p>LED, HID, interior and custom lighting.</p></div>
+</div></div></section>
+
+<section id="how"><div class="wrap"><h2>How it <span>works</span></h2>
+<div class="grid">
+<div class="card"><div class="num">1</div><h3>Tell us the problem</h3><p>Fill the form, it opens WhatsApp.</p></div>
+<div class="card"><div class="num">2</div><h3>We match an expert</h3><p>A skilled technician in your city.</p></div>
+<div class="card"><div class="num">3</div><h3>Get it fixed</h3><p>Agree price and time directly.</p></div>
+</div></div></section>
+
+<section><div class="wrap two">
+<div id="book"><h2>Book a <span>Fix</span></h2>
+<form id="bookForm">
+<input name="name" placeholder="Your name" required>
+<input name="city" placeholder="City" required>
+<input name="car" placeholder="Car make, model, year" required>
+<select name="service" required><option value="">Service needed</option><option>Head unit</option><option>Speakers</option><option>Amp / Subwoofer</option><option>Wiring</option><option>Camera</option><option>Lights</option><option>Other</option></select>
+<textarea name="issue" rows="3" placeholder="Describe the problem"></textarea>
+<button class="btn" type="submit">Send on WhatsApp</button>
+</form></div>
+<div id="join"><h2>Join as <span>Expert</span></h2>
+<form id="joinForm">
+<input name="name" placeholder="Your name" required>
+<input name="city" placeholder="City" required>
+<input name="skill" placeholder="Main skill (e.g. amps, wiring)" required>
+<input name="exp" type="number" min="0" placeholder="Years of experience" required>
+<textarea name="about" rows="3" placeholder="Shop / past work (optional)"></textarea>
+<button class="btn" type="submit">Apply on WhatsApp</button>
+</form></div>
+</div></section>
+
+<footer>© <span id="y"></span> BassDrive · <a href="https://wa.me/923225150501" style="color:var(--amber)">WhatsApp us</a></footer>
+
+<script>
+var WA="923225150501";
+document.getElementById("y").textContent=new Date().getFullYear();
+function send(id,title){
+  document.getElementById(id).addEventListener("submit",function(e){
+    e.preventDefault();
+    var d=new FormData(e.target),t="*"+title+"*\n";
+    d.forEach(function(v,k){if(v)t+=k+": "+v+"\n"});
+    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(t),"_blank");
+  });
+}
+send("bookForm","BassDrive – Book a Fix");
+send("joinForm","BassDrive – Join as Expert");
+</script>
+</body>
+</html>
