@@ -6,6 +6,8 @@
 <title>BassDrive — Car Electronics & Sound Experts</title>
 <meta name="description" content="BassDrive connects car owners with expert technicians for car electronics, tape/head units, sound systems and wiring faults — even the ones dealers can't fix.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
 <meta name="theme-color" content="#0b0b0d">
 <link rel="canonical" href="https://bassdrive.vercel.app/">
 <meta property="og:type" content="website">
@@ -211,6 +213,55 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 @keyframes bootout{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media(prefers-reduced-motion:reduce){.skel .pimg,.skel i{animation:none}#boot{display:none!important}}
 
+[hidden]{display:none!important}
+
+/* Language toggle */
+.nav-r{display:flex;align-items:center;gap:10px}
+.lang{font:inherit;font-size:13px;font-weight:600;color:var(--accent2);background:transparent;border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer;transition:.2s}
+.lang:hover{border-color:var(--accent2)}
+.logo{direction:ltr}
+.nav-r .btn{white-space:nowrap;padding:10px 16px;line-height:1.4}
+.stat b{direction:ltr;unicode-bidi:isolate}
+:lang(ur) body{line-height:1.95;font-family:"Noto Nastaliq Urdu",Inter,system-ui,sans-serif}
+:lang(ur) h1,:lang(ur) h2,:lang(ur) h3,:lang(ur) .btn,:lang(ur) .tabs button{font-family:"Noto Nastaliq Urdu",serif;letter-spacing:0}
+:lang(ur) h1,:lang(ur) h2,:lang(ur) h3{line-height:1.75;font-weight:700}
+:lang(ur) .logo,:lang(ur) #boot{font-family:"Archivo Black",sans-serif;line-height:1.2}
+[dir=rtl] .speaker{right:auto;left:20px}
+[dir=rtl] .story blockquote{border-left:0;border-right:4px solid var(--accent);padding-left:0;padding-right:20px}
+[dir=rtl] .track{direction:ltr}
+[dir=rtl] .slide{direction:rtl}
+
+/* Trust badges */
+.trust{padding:26px 0;border-bottom:1px solid var(--line)}
+.trust .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.tb{display:flex;align-items:center;gap:12px}
+.tb svg{flex:none;width:40px;height:40px;padding:9px;border:1px solid rgba(255,176,32,.4);border-radius:50%;fill:none;stroke:var(--accent2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tb b{display:block;font-size:15px}
+.tb span{display:block;color:var(--muted);font-size:13px;line-height:1.4}
+
+/* Before / After slider */
+.ba{position:relative;max-width:800px;margin:0 auto;aspect-ratio:8/5;border-radius:14px;overflow:hidden;border:1px solid var(--line);direction:ltr;user-select:none;-webkit-user-select:none;background:var(--bg2);--p:50%}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ba-before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.ba-line{position:absolute;top:0;bottom:0;left:var(--p);width:3px;margin-left:-1.5px;background:var(--accent2);pointer-events:none}
+.ba-line i{position:absolute;top:50%;left:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:var(--accent);border:3px solid #fff;display:grid;place-items:center;color:#fff;font-style:normal;font-size:18px}
+.ba-line i::before{content:"\2194"}
+.ba:focus-within .ba-line i{outline:2px solid var(--accent2);outline-offset:2px}
+.ba-tag{position:absolute;top:12px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.65);color:#fff;pointer-events:none}
+.ba-tag.l{left:12px}.ba-tag.r{right:12px}
+.ba-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize}
+
+/* Sticky mobile bar */
+.bar{display:none}
+@media(max-width:760px){
+  .bar{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:15;background:rgba(20,20,24,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+  .bar a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px;font-size:12px;font-weight:600;color:var(--muted)}
+  .bar a span{font-size:18px;line-height:1.2}
+  .bar .bk{background:var(--accent);color:#fff}
+  .wa{display:none}
+  body{padding-bottom:62px}
+}
+
 /* Logo beat */
 .logo span{display:inline-block;animation:beat 1.6s ease-in-out infinite}
 @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}24%{transform:scale(1)}36%{transform:scale(1.08)}48%{transform:scale(1)}}
@@ -225,6 +276,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   .track{transition:none}
 }
 </style>
+<script>try{var L=new URLSearchParams(location.search).get("lang")||localStorage.getItem("bd_lang");if(L==="ur"){document.documentElement.lang="ur";document.documentElement.dir="rtl";var k=document.createElement("link");k.rel="stylesheet";k.id="urfont";k.href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap";document.head.appendChild(k)}}catch(e){}</script>
 <script>document.documentElement.classList.add("js");try{if(!localStorage.getItem("bd_seen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("boot")}catch(e){}</script>
 </head>
 <body>
@@ -240,7 +292,10 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <a href="#book">Book a fix</a>
       <a href="#book">Join as expert</a>
     </div>
-    <a href="#book" class="btn btn-red">Book Now</a>
+    <div class="nav-r">
+      <button type="button" class="lang" id="langBtn" lang="ur">اردو</button>
+      <a href="#book" class="btn btn-red">Book Now</a>
+    </div>
   </div>
 </nav>
 
@@ -267,6 +322,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     </div>
   </div>
 </header>
+
+<div class="trust">
+  <div class="wrap">
+    <div class="tb reveal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><div><b>Pay After Fix</b><span>Pay only when it works</span></div></div>
+    <div class="tb reveal" style="--d:.1s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><div><b>Verified Experts</b><span>Skill-checked technicians</span></div></div>
+    <div class="tb reveal" style="--d:.2s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><div><b>Work Warranty</b><span>Guarantee on every job</span></div></div>
+    <div class="tb reveal" style="--d:.3s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Same-Day Service</b><span>Fast response in your city</span></div></div>
+  </div>
+</div>
 
 <div class="stats">
   <div class="wrap">
@@ -298,6 +362,20 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <input id="psearch" type="search" placeholder="Search products…" aria-label="Search products">
     </div>
     <div class="grid" id="pgrid"><p class="pmsg">Loading products…</p></div>
+  </div>
+</section>
+
+<!-- PLACEHOLDER before/after images: replace images/ba/before.svg and after.svg with real photos -->
+<section id="results">
+  <div class="wrap">
+    <div class="head"><h2>See the difference</h2><p>Drag the slider to compare.</p></div>
+    <div class="ba reveal" id="ba">
+      <img src="images/ba/after.svg" alt="After: working head unit with neat wiring" width="800" height="500" loading="lazy">
+      <div class="ba-before"><img src="images/ba/before.svg" alt="Before: dead head unit with tangled wiring" width="800" height="500" loading="lazy"></div>
+      <span class="ba-tag l">Before</span><span class="ba-tag r">After</span>
+      <div class="ba-line"><i></i></div>
+      <input class="ba-range" id="baRange" type="range" min="0" max="100" value="50" aria-label="Before and after slider">
+    </div>
   </div>
 </section>
 
@@ -382,8 +460,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <div class="wrap">
     <span><strong style="color:var(--text)">BassDrive</strong> — Car Electronics & Sound Experts</span>
     <span>© <span id="yr"></span> BassDrive. All rights reserved.</span>
+    <button type="button" class="lang" id="installBtn" hidden>Install app</button>
   </div>
 </footer>
+
+<div class="bar" role="navigation" aria-label="Quick actions">
+  <a href="tel:+923225150501"><span>📞</span>Call</a>
+  <a href="https://wa.me/923225150501" id="barWa" target="_blank" rel="noopener"><span>💬</span>WhatsApp</a>
+  <a href="#book" class="bk"><span>📝</span>Book</a>
+</div>
 
 <a class="wa" id="waBtn" aria-label="Chat on WhatsApp">💬</a>
 
@@ -493,6 +578,7 @@ document.querySelectorAll("[data-count]").forEach(el => statIO.observe(el));
   const typed = em.lastChild;
   let i = 0;
   setTimeout(function step() {
+    if (window.__twStop) return;
     typed.textContent = text.slice(0, ++i);
     if (i < text.length) setTimeout(step, 65);
     else setTimeout(() => typed.classList.remove("caret"), 2500);
@@ -534,12 +620,12 @@ document.querySelectorAll(".card").forEach(attachTilt);
 
   CATS.forEach(c => {
     const b = document.createElement("button");
-    b.textContent = c; b.setAttribute("role", "tab");
+    b.textContent = c; b.dataset.cat = c; b.setAttribute("role", "tab");
     b.onclick = () => { cat = c; render(); };
     tabs.appendChild(b);
   });
 
-  function msg(t) { grid.innerHTML = ""; const p = document.createElement("p"); p.className = "pmsg"; p.textContent = t; grid.appendChild(p); }
+  function msg(t) { grid.innerHTML = ""; const p = document.createElement("p"); p.className = "pmsg"; p.textContent = t; grid.appendChild(p); translate(grid); }
 
   function card(p, i) {
     const el = document.createElement("div");
@@ -575,7 +661,7 @@ document.querySelectorAll(".card").forEach(attachTilt);
   const cache = new Map();   // id -> card element (reused so FLIP can track it)
 
   function render() {
-    [...tabs.children].forEach(b => b.classList.toggle("on", b.textContent === cat));
+    [...tabs.children].forEach(b => b.classList.toggle("on", b.dataset.cat === cat));
     const q = search.value.trim().toLowerCase();
     const list = products.filter(p => (cat === "All" || p.category === cat) &&
       (!q || (p.name + " " + p.brand + " " + p.specs + " " + p.category).toLowerCase().includes(q)));
@@ -594,6 +680,7 @@ document.querySelectorAll(".card").forEach(attachTilt);
       if (!el) { el = card(p, i); cache.set(p.id, el); revealIO.observe(el); attachTilt(el); }
       grid.appendChild(el);
     });
+    translate(grid);
     if (reduce) return;
 
     // FLIP step 2: animate from old position to new; fade in newcomers
@@ -615,7 +702,9 @@ document.querySelectorAll(".card").forEach(attachTilt);
   grid.addEventListener("click", e => {
     const a = e.target.closest("a.btn-red");
     if (!a || a.classList.contains("off") || reduce) return;
-    const wa = document.getElementById("waBtn"), s = a.getBoundingClientRect(), t = wa.getBoundingClientRect();
+    const wa0 = document.getElementById("waBtn"),
+          wa = getComputedStyle(wa0).display === "none" ? document.getElementById("barWa") : wa0,
+          s = a.getBoundingClientRect(), t = wa.getBoundingClientRect();
     const x0 = s.left + s.width / 2 - 16, y0 = s.top + s.height / 2 - 16;
     const dx = t.left + t.width / 2 - 16 - x0, dy = t.top + t.height / 2 - 16 - y0;
     const f = document.createElement("div");
@@ -644,6 +733,153 @@ document.querySelectorAll(".card").forEach(attachTilt);
   search.addEventListener("input", render);
   fetch("products.json").then(r => r.json()).then(d => { products = d; render(); })
     .catch(() => msg("Products are unavailable right now. Message us on WhatsApp."));
+})();
+
+// Before/After slider
+(function () {
+  const ba = document.getElementById("ba"), r = document.getElementById("baRange");
+  r.addEventListener("input", () => ba.style.setProperty("--p", r.value + "%"));
+})();
+
+// English / Urdu toggle (text-node dictionary, so the HTML stays plain English)
+const UR = {
+  "Services": "خدمات", "Products": "مصنوعات", "How it works": "طریقہ کار", "Book a fix": "مرمت بُک کریں",
+  "Join as expert": "ماہر کے طور پر شامل ہوں", "Book Now": "ابھی بُک کریں",
+  "⚡ Car Electronics & Sound Specialists": "⚡ کار الیکٹرانکس اور ساؤنڈ ماہرین",
+  "Dealer couldn't fix it?": "ڈیلر ٹھیک نہیں کر سکا؟", "Our experts can.": "ہمارے ماہرین کر سکتے ہیں۔",
+  "BassDrive connects you with skilled, verified technicians for car tape/head units, sound systems, wiring and electrical faults — fast, fair and done right.":
+    "BassDrive آپ کو کار کے ٹیپ/ہیڈ یونٹس، ساؤنڈ سسٹمز، وائرنگ اور برقی خرابیوں کے لیے ہنر مند اور تصدیق شدہ ٹیکنیشنز سے ملاتا ہے — تیز، مناسب دام اور بہترین کام۔",
+  "Get it Fixed": "ٹھیک کروائیں", "I'm a Technician": "میں ٹیکنیشن ہوں",
+  "Pay After Fix": "کام کے بعد ادائیگی", "Pay only when it works": "ادائیگی صرف تب جب کام چل جائے",
+  "Verified Experts": "تصدیق شدہ ماہرین", "Skill-checked technicians": "ہنر کی جانچ شدہ ٹیکنیشنز",
+  "Work Warranty": "کام کی وارنٹی", "Guarantee on every job": "ہر کام پر گارنٹی",
+  "Same-Day Service": "اسی دن سروس", "Fast response in your city": "آپ کے شہر میں فوری رسپانس",
+  "Cars Fixed": "ٹھیک کی گئی گاڑیاں", "Experts": "ماہرین", "Cities": "شہر",
+  "What we fix & install": "ہم کیا ٹھیک اور انسٹال کرتے ہیں",
+  "From a dead stereo to a full sound upgrade.": "خراب اسٹیریو سے لے کر مکمل ساؤنڈ اپ گریڈ تک۔",
+  "Tape & Head Units": "ٹیپ اور ہیڈ یونٹس",
+  "Not powering on, no sound, stuck screens, Bluetooth and Android panel issues.": "آن نہ ہونا، آواز نہ آنا، اسکرین اٹک جانا، بلوٹوتھ اور اینڈرائیڈ پینل کے مسائل۔",
+  "Sound Systems": "ساؤنڈ سسٹمز",
+  "Speakers, woofers, amplifiers, tuning and complete audio upgrades.": "اسپیکرز، ووفرز، ایمپلی فائرز، ٹیوننگ اور مکمل آڈیو اپ گریڈ۔",
+  "Wiring & Electrical": "وائرنگ اور الیکٹریکل",
+  "Short circuits, fuse problems, battery drain and hidden wiring faults.": "شارٹ سرکٹ، فیوز کے مسائل، بیٹری ڈرین اور چھپی ہوئی وائرنگ کی خرابیاں۔",
+  "Cameras & Sensors": "کیمرے اور سینسرز",
+  "Reverse cameras, parking sensors, dash cams and installation.": "ریورس کیمرے، پارکنگ سینسرز، ڈیش کیم اور انسٹالیشن۔",
+  "Lights & Accessories": "لائٹس اور ایکسیسریز",
+  "LED, ambient lighting, alarms and central locking.": "ایل ای ڈی، ایمبینٹ لائٹنگ، الارم اور سنٹرل لاکنگ۔",
+  "Diagnosis": "تشخیص",
+  "The tricky faults others gave up on — tested and traced properly.": "وہ مشکل خرابیاں جو دوسروں نے چھوڑ دیں — درست طریقے سے جانچی اور ٹھیک کی گئیں۔",
+  "Genuine parts and gear. Order in one tap on WhatsApp.": "اصل پرزے اور سامان۔ واٹس ایپ پر ایک ٹیپ میں آرڈر کریں۔",
+  "All": "سب", "Head Units": "ہیڈ یونٹس", "Speakers": "اسپیکرز", "Woofers": "ووفرز", "Amps": "ایمپلی فائرز",
+  "Cameras": "کیمرے", "Lights": "لائٹس",
+  "Search products…": "مصنوعات تلاش کریں…", "Search products": "مصنوعات تلاش کریں",
+  "In stock": "دستیاب", "Out of stock": "ختم", "Order on WhatsApp": "واٹس ایپ پر آرڈر کریں",
+  "No products found.": "کوئی پروڈکٹ نہیں ملی۔",
+  "Products are unavailable right now. Message us on WhatsApp.": "مصنوعات ابھی دستیاب نہیں۔ ہمیں واٹس ایپ پر پیغام کریں۔",
+  "See the difference": "فرق دیکھیں", "Drag the slider to compare.": "موازنہ کے لیے سلائیڈر کھینچیں۔",
+  "Before": "پہلے", "After": "بعد", "Before and after slider": "پہلے اور بعد سلائیڈر",
+  "\"My car tape stopped working. Even the dealer couldn't find the problem — but one skilled technician fixed it.\"":
+    "\"میری کار کا ٹیپ کام کرنا چھوڑ گیا۔ ڈیلر بھی مسئلہ نہ ڈھونڈ سکا — مگر ایک ہنر مند ٹیکنیشن نے ٹھیک کر دیا۔\"",
+  "That's why BassDrive exists.": "اسی لیے BassDrive وجود میں آیا۔",
+  "Talented technicians often lack customers. Car owners often can't find the right expert. We bring both together.":
+    "باصلاحیت ٹیکنیشنز کو اکثر گاہک نہیں ملتے۔ کار مالکان کو اکثر صحیح ماہر نہیں ملتا۔ ہم دونوں کو ملاتے ہیں۔",
+  "Every expert is checked for real skill before joining.": "ہر ماہر کو شامل کرنے سے پہلے اس کی اصل مہارت جانچی جاتی ہے۔",
+  "Tell us the problem": "ہمیں مسئلہ بتائیں", "Fill the short form or message us on WhatsApp.": "مختصر فارم بھریں یا واٹس ایپ پر پیغام کریں۔",
+  "We match an expert": "ہم ماہر ڈھونڈتے ہیں", "The right technician for your car and fault.": "آپ کی گاڑی اور خرابی کے لیے درست ٹیکنیشن۔",
+  "Get it fixed": "ٹھیک کروائیں", "At the workshop or your location. Pay after it works.": "ورکشاپ پر یا آپ کی جگہ پر۔ کام چلنے کے بعد ادائیگی کریں۔",
+  "What owners say": "مالکان کیا کہتے ہیں",
+  "Dealer said the head unit was dead. The technician found a loose wire and it worked the same day.": "ڈیلر نے کہا ہیڈ یونٹ ختم ہے۔ ٹیکنیشن کو ایک ڈھیلی تار ملی اور اسی دن چل پڑا۔",
+  "— Car owner, Lahore": "— کار مالک، لاہور",
+  "Fair price, clean wiring and the sound is so much better than before.": "مناسب قیمت، صاف وائرنگ اور آواز پہلے سے کہیں بہتر ہے۔",
+  "— Car owner, Karachi": "— کار مالک، کراچی",
+  "Since joining BassDrive I get new customers every week instead of waiting in my shop.": "BassDrive میں شامل ہونے کے بعد ہر ہفتے نئے گاہک ملتے ہیں، دکان پر انتظار نہیں کرنا پڑتا۔",
+  "— Technician, Islamabad": "— ٹیکنیشن، اسلام آباد",
+  "Get started": "شروع کریں", "Both forms open WhatsApp with your details filled in.": "دونوں فارم آپ کی تفصیلات کے ساتھ واٹس ایپ کھولتے ہیں۔",
+  "🚗 Book a Fix": "🚗 مرمت بُک کریں", "For car owners": "کار مالکان کے لیے",
+  "Your name": "آپ کا نام", "Phone": "فون", "Car make & model": "کار کا برانڈ اور ماڈل",
+  "e.g. Toyota Corolla 2018": "مثلاً ٹویوٹا کرولا 2018", "Service": "سروس",
+  "Tape / Head Unit": "ٹیپ / ہیڈ یونٹ", "Sound System": "ساؤنڈ سسٹم", "Other / Not sure": "دیگر / یقین نہیں",
+  "City / Area": "شہر / علاقہ", "Describe the problem": "مسئلہ بیان کریں", "Send via WhatsApp": "واٹس ایپ پر بھیجیں",
+  "🔧 Join as Expert": "🔧 ماہر کے طور پر شامل ہوں", "For technicians who want more customers": "ان ٹیکنیشنز کے لیے جو زیادہ گاہک چاہتے ہیں",
+  "Speciality": "مہارت", "Tape / Head Units": "ٹیپ / ہیڈ یونٹس", "Sound & Audio": "ساؤنڈ اور آڈیو",
+  "Auto Electrician": "آٹو الیکٹریشن", "All-round": "ہر کام کے ماہر", "Years of experience": "تجربے کے سال",
+  "Workshop? (name/location, if any)": "ورکشاپ؟ (نام/مقام، اگر ہو)", "Apply via WhatsApp": "واٹس ایپ پر درخواست دیں",
+  "— Car Electronics & Sound Experts": "— کار الیکٹرانکس اور ساؤنڈ ماہرین",
+  "BassDrive. All rights reserved.": "BassDrive۔ جملہ حقوق محفوظ ہیں۔",
+  "Call": "کال", "WhatsApp": "واٹس ایپ", "Book": "بُک کریں", "Install app": "ایپ انسٹال کریں",
+  "Chat on WhatsApp": "واٹس ایپ پر چیٹ کریں", "Quick actions": "فوری اقدامات"
+};
+let lang = "en";
+const origTxt = new WeakMap(), ATTR = { "placeholder": "enPh", "aria-label": "enAria" };
+const langBtn = document.getElementById("langBtn");
+
+function translate(root) {
+  const ur = lang === "ur", w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = w.nextNode())) {
+    const p = n.parentNode;
+    if (p.closest && p.closest("script,style,#boot")) continue;
+    if (ur) {
+      const src = origTxt.has(n) ? origTxt.get(n) : n.nodeValue;
+      const k = src.trim().replace(/\s+/g, " "), t = UR[k];
+      if (t) { origTxt.set(n, src); n.nodeValue = src.match(/^\s*/)[0] + t + src.match(/\s*$/)[0]; }
+    } else if (origTxt.has(n)) { n.nodeValue = origTxt.get(n); origTxt.delete(n); }
+  }
+  root.querySelectorAll("[placeholder],[aria-label]").forEach(el => Object.keys(ATTR).forEach(a => {
+    if (!el.hasAttribute(a)) return;
+    const key = ATTR[a];
+    if (ur) { const src = el.dataset[key] !== undefined ? el.dataset[key] : el.getAttribute(a), t = UR[src];
+      if (t) { el.dataset[key] = src; el.setAttribute(a, t); } }
+    else if (el.dataset[key] !== undefined) { el.setAttribute(a, el.dataset[key]); delete el.dataset[key]; }
+  }));
+}
+
+function loadUrduFont() {
+  if (document.getElementById("urfont")) return;
+  const l = document.createElement("link");
+  l.rel = "stylesheet"; l.id = "urfont";
+  l.href = "https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap";
+  document.head.appendChild(l);
+}
+
+function setLang(l, initial) {
+  lang = l;
+  const root = document.documentElement;
+  root.lang = l; root.dir = l === "ur" ? "rtl" : "ltr";
+  if (l === "ur") loadUrduFont();
+  if (!(initial && l === "en")) {
+    window.__twStop = true;
+    translate(document.body);
+    const g = document.querySelector(".tw-ghost"), t = document.querySelector(".tw-typed");
+    if (g && t) { t.textContent = g.textContent; t.classList.remove("caret"); }
+  }
+  langBtn.textContent = l === "ur" ? "English" : "اردو";
+  langBtn.lang = l === "ur" ? "en" : "ur";
+  if (!initial) try { localStorage.setItem("bd_lang", l); } catch (e) {}
+}
+
+// Send English values to WhatsApp whatever language the page is in
+document.querySelectorAll("option").forEach(o => { o.value = o.textContent.trim(); });
+langBtn.addEventListener("click", () => setLang(lang === "ur" ? "en" : "ur"));
+(function () {
+  let l = "en";
+  try { l = new URLSearchParams(location.search).get("lang") || localStorage.getItem("bd_lang") || "en"; } catch (e) {}
+  setLang(l === "ur" ? "ur" : "en", true);
+})();
+
+// PWA: service worker + install button
+if ("serviceWorker" in navigator) {
+  addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}
+(function () {
+  const btn = document.getElementById("installBtn");
+  let dp = null;
+  addEventListener("beforeinstallprompt", e => { e.preventDefault(); dp = e; btn.hidden = false; });
+  btn.addEventListener("click", async () => {
+    if (!dp) return;
+    dp.prompt(); await dp.userChoice; dp = null; btn.hidden = true;
+  });
+  addEventListener("appinstalled", () => { btn.hidden = true; });
 })();
 
 // First-visit loader: logo beat, gone in under a second
