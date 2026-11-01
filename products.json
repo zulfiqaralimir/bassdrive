@@ -1,0 +1,62 @@
+[
+  {
+    "id": "hu-001",
+    "name": "9-inch Android Head Unit",
+    "brand": "Sample Brand",
+    "category": "Head Units",
+    "price": 18500,
+    "specs": "2GB RAM, 32GB, Bluetooth, WiFi, Mirror Link",
+    "image": "images/products/head-unit.svg",
+    "inStock": true
+  },
+  {
+    "id": "sp-001",
+    "name": "6.5-inch Component Speakers",
+    "brand": "Sample Brand",
+    "category": "Speakers",
+    "price": 7500,
+    "specs": "300W peak, 4 ohm, silk dome tweeters",
+    "image": "images/products/speaker.svg",
+    "inStock": true
+  },
+  {
+    "id": "wf-001",
+    "name": "12-inch Subwoofer",
+    "brand": "Sample Brand",
+    "category": "Woofers",
+    "price": 14000,
+    "specs": "1000W peak, 4 ohm, dual voice coil",
+    "image": "images/products/woofer.svg",
+    "inStock": true
+  },
+  {
+    "id": "am-001",
+    "name": "4-Channel Amplifier",
+    "brand": "Sample Brand",
+    "category": "Amps",
+    "price": 16500,
+    "specs": "4x75W RMS, Class AB, bass boost",
+    "image": "images/products/amp.svg",
+    "inStock": false
+  },
+  {
+    "id": "cm-001",
+    "name": "HD Reverse Camera",
+    "brand": "Sample Brand",
+    "category": "Cameras",
+    "price": 3500,
+    "specs": "170 degree view, night vision, waterproof",
+    "image": "images/products/camera.svg",
+    "inStock": true
+  },
+  {
+    "id": "lt-001",
+    "name": "LED Headlight Kit H4",
+    "brand": "Sample Brand",
+    "category": "Lights",
+    "price": 5500,
+    "specs": "6000K white, 8000 lumens, plug and play",
+    "image": "images/products/lights.svg",
+    "inStock": true
+  }
+]
