@@ -5,3 +5,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+.vercel
+.env*
+
+# large original hero photo (webp versions are used)
+images/hero-dashboard/
