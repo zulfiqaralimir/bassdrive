@@ -1,0 +1,177 @@
+{
+  "_note": "Placeholder prices in PKR as [min, max] per car type. Edit freely.",
+  "carTypes": [
+    {
+      "id": "hatchback",
+      "label": "Hatchback / small (Alto, Cultus, Mehran)"
+    },
+    {
+      "id": "sedan",
+      "label": "Sedan (Civic, Corolla, City)"
+    },
+    {
+      "id": "suv",
+      "label": "SUV / jeep (Fortuner, Prado, Vigo)"
+    },
+    {
+      "id": "luxury",
+      "label": "Luxury / imported"
+    }
+  ],
+  "services": [
+    {
+      "id": "headunit",
+      "label": "Head unit installation",
+      "prices": {
+        "hatchback": [
+          1000,
+          2500
+        ],
+        "sedan": [
+          1500,
+          3500
+        ],
+        "suv": [
+          2000,
+          4500
+        ],
+        "luxury": [
+          3500,
+          8000
+        ]
+      }
+    },
+    {
+      "id": "speakers",
+      "label": "Speaker installation (pair)",
+      "prices": {
+        "hatchback": [
+          800,
+          2000
+        ],
+        "sedan": [
+          1000,
+          2500
+        ],
+        "suv": [
+          1500,
+          3500
+        ],
+        "luxury": [
+          2500,
+          6000
+        ]
+      }
+    },
+    {
+      "id": "amp",
+      "label": "Amplifier + subwoofer setup",
+      "prices": {
+        "hatchback": [
+          3000,
+          7000
+        ],
+        "sedan": [
+          3500,
+          8500
+        ],
+        "suv": [
+          4500,
+          11000
+        ],
+        "luxury": [
+          7000,
+          18000
+        ]
+      }
+    },
+    {
+      "id": "wiring",
+      "label": "Full wiring / rewiring",
+      "prices": {
+        "hatchback": [
+          2500,
+          6000
+        ],
+        "sedan": [
+          3000,
+          8000
+        ],
+        "suv": [
+          4000,
+          10000
+        ],
+        "luxury": [
+          7000,
+          16000
+        ]
+      }
+    },
+    {
+      "id": "camera",
+      "label": "Reverse camera installation",
+      "prices": {
+        "hatchback": [
+          1000,
+          2500
+        ],
+        "sedan": [
+          1200,
+          3000
+        ],
+        "suv": [
+          1800,
+          4000
+        ],
+        "luxury": [
+          3000,
+          7000
+        ]
+      }
+    },
+    {
+      "id": "lights",
+      "label": "LED / light upgrade",
+      "prices": {
+        "hatchback": [
+          1500,
+          4000
+        ],
+        "sedan": [
+          2000,
+          5000
+        ],
+        "suv": [
+          2500,
+          6500
+        ],
+        "luxury": [
+          4000,
+          12000
+        ]
+      }
+    },
+    {
+      "id": "diagnosis",
+      "label": "Fault diagnosis (inspection)",
+      "prices": {
+        "hatchback": [
+          500,
+          1500
+        ],
+        "sedan": [
+          500,
+          2000
+        ],
+        "suv": [
+          800,
+          2500
+        ],
+        "luxury": [
+          1500,
+          4000
+        ]
+      }
+    }
+  ]
+}

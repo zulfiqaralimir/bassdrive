@@ -262,6 +262,34 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   body{padding-bottom:62px}
 }
 
+/* City select, nav tweaks */
+.lang option{background:var(--card);color:var(--text)}
+select.lang{background:var(--bg)}
+.links{gap:18px;font-size:13.5px}
+@media(max-width:1000px){.links{display:none}}
+@media(max-width:760px){.nav-r .btn{display:none}}
+@media(max-width:400px){.nav-r{gap:6px}.lang{padding:6px 9px;font-size:12px}}
+
+/* Fault Finder + Price Estimator */
+.tool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:12px}
+.tool h3{font-size:22px}
+.tool .sub{color:var(--muted);font-size:14px}
+.tool .sub span{color:var(--accent2);font-weight:600}
+.ffq{font-weight:600;font-size:17px}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:start;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;transition:.2s}
+.opt:hover{border-color:var(--accent2);transform:translateX(3px)}
+[dir=rtl] .opt:hover{transform:translateX(-3px)}
+.ffnav{display:flex;gap:8px;flex-wrap:wrap}
+.res h4{font-family:"Archivo Black",sans-serif;font-size:18px;margin:4px 0 6px}
+.res p{color:var(--muted);font-size:15px;margin-bottom:10px}
+.res .note,.tool .note{font-size:12px;color:var(--muted)}
+.range{font-family:"Archivo Black",sans-serif;font-size:clamp(22px,4vw,30px);color:var(--accent2);margin:2px 0 4px}
+.res .btn,.tool>.btn{margin-top:10px;width:100%;text-align:center}
+.pop{animation:pop .45s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pop{animation:none}.opt:hover{transform:none}}
+
 /* Logo beat */
 .logo span{display:inline-block;animation:beat 1.6s ease-in-out infinite}
 @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}24%{transform:scale(1)}36%{transform:scale(1.08)}48%{transform:scale(1)}}
@@ -288,11 +316,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <div class="links">
       <a href="#services">Services</a>
       <a href="#products">Products</a>
-      <a href="#how">How it works</a>
+      <a href="#tools">Fault Finder</a>
+      <a href="experts.html">Experts</a>
+      <a href="blog/">Blog</a>
       <a href="#book">Book a fix</a>
-      <a href="#book">Join as expert</a>
     </div>
     <div class="nav-r">
+      <select class="lang" id="citySel" aria-label="Select city">
+        <option value="All">All cities</option><option>Islamabad</option><option>Rawalpindi</option><option>Wah Cantt</option><option>Lahore</option>
+      </select>
       <button type="button" class="lang" id="langBtn" lang="ur">اردو</button>
       <a href="#book" class="btn btn-red">Book Now</a>
     </div>
@@ -350,6 +382,29 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <div class="card"><div class="ico">📷</div><h3>Cameras & Sensors</h3><p>Reverse cameras, parking sensors, dash cams and installation.</p></div>
       <div class="card"><div class="ico">💡</div><h3>Lights & Accessories</h3><p>LED, ambient lighting, alarms and central locking.</p></div>
       <div class="card"><div class="ico">🛠️</div><h3>Diagnosis</h3><p>The tricky faults others gave up on — tested and traced properly.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <div class="head"><h2>Find the fault, know the price</h2><p>Answer a few taps for a likely cause and a rough PKR estimate.</p></div>
+    <div class="forms">
+      <div class="tool reveal" id="ff">
+        <h3>🔎 Fault Finder</h3>
+        <div class="sub" id="ffStep"></div>
+        <p class="ffq" id="ffQ">Loading…</p>
+        <div class="opts" id="ffOpts"></div>
+        <div class="ffnav"><button type="button" class="lang" id="ffBack" hidden>Back</button><button type="button" class="lang" id="ffReset" hidden>Start over</button></div>
+      </div>
+      <div class="tool reveal" id="est" style="--d:.1s">
+        <h3>💰 Price Estimator</h3>
+        <div class="sub">Pick a service and your car type.</div>
+        <label>Service<select id="estSvc"></select></label>
+        <label>Car type<select id="estCar"></select></label>
+        <div id="estOut"></div>
+        <a class="btn btn-red" id="estWa" target="_blank" rel="noopener">Book this on WhatsApp</a>
+      </div>
     </div>
   </div>
 </section>
@@ -460,6 +515,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <div class="wrap">
     <span><strong style="color:var(--text)">BassDrive</strong> — Car Electronics & Sound Experts</span>
     <span>© <span id="yr"></span> BassDrive. All rights reserved.</span>
+    <span><a href="experts.html">Experts</a> · <a href="blog/">Blog</a></span>
     <button type="button" class="lang" id="installBtn" hidden>Install app</button>
   </div>
 </footer>
@@ -663,7 +719,7 @@ document.querySelectorAll(".card").forEach(attachTilt);
   function render() {
     [...tabs.children].forEach(b => b.classList.toggle("on", b.dataset.cat === cat));
     const q = search.value.trim().toLowerCase();
-    const list = products.filter(p => (cat === "All" || p.category === cat) &&
+    const list = products.filter(p => (cat === "All" || p.category === cat) && cityOK(p) &&
       (!q || (p.name + " " + p.brand + " " + p.specs + " " + p.category).toLowerCase().includes(q)));
 
     // FLIP step 1: remember where visible cards are now
@@ -731,6 +787,7 @@ document.querySelectorAll(".card").forEach(attachTilt);
   }
 
   search.addEventListener("input", render);
+  addEventListener("citychange", render);
   fetch("products.json").then(r => r.json()).then(d => { products = d; render(); })
     .catch(() => msg("Products are unavailable right now. Message us on WhatsApp."));
 })();
@@ -807,7 +864,17 @@ const UR = {
   "— Car Electronics & Sound Experts": "— کار الیکٹرانکس اور ساؤنڈ ماہرین",
   "BassDrive. All rights reserved.": "BassDrive۔ جملہ حقوق محفوظ ہیں۔",
   "Call": "کال", "WhatsApp": "واٹس ایپ", "Book": "بُک کریں", "Install app": "ایپ انسٹال کریں",
-  "Chat on WhatsApp": "واٹس ایپ پر چیٹ کریں", "Quick actions": "فوری اقدامات"
+  "Chat on WhatsApp": "واٹس ایپ پر چیٹ کریں", "Quick actions": "فوری اقدامات",
+  "Fault Finder": "فالٹ فائنڈر", "Blog": "بلاگ", "Select city": "شہر منتخب کریں", "All cities": "تمام شہر",
+  "Islamabad": "اسلام آباد", "Rawalpindi": "راولپنڈی", "Wah Cantt": "واہ کینٹ", "Lahore": "لاہور",
+  "Find the fault, know the price": "خرابی ڈھونڈیں، قیمت جانیں",
+  "Answer a few taps for a likely cause and a rough PKR estimate.": "چند ٹیپس میں ممکنہ وجہ اور تخمینی قیمت (روپوں میں) جانیں۔",
+  "🔎 Fault Finder": "🔎 فالٹ فائنڈر", "Step": "مرحلہ", "Back": "واپس", "Start over": "دوبارہ شروع کریں",
+  "Likely issue": "ممکنہ مسئلہ", "Estimated cost": "تخمینی خرچ",
+  "Estimate only. The expert confirms the final price after inspection.": "صرف تخمینہ۔ حتمی قیمت معائنے کے بعد ماہر بتائے گا۔",
+  "Book this fix on WhatsApp": "یہ مرمت واٹس ایپ پر بُک کریں", "💰 Price Estimator": "💰 قیمت کا تخمینہ",
+  "Pick a service and your car type.": "سروس اور گاڑی کی قسم منتخب کریں۔", "Car type": "گاڑی کی قسم",
+  "Book this on WhatsApp": "واٹس ایپ پر بُک کریں", "Loading…": "لوڈ ہو رہا ہے…"
 };
 let lang = "en";
 const origTxt = new WeakMap(), ATTR = { "placeholder": "enPh", "aria-label": "enAria" };
@@ -859,7 +926,7 @@ function setLang(l, initial) {
 }
 
 // Send English values to WhatsApp whatever language the page is in
-document.querySelectorAll("option").forEach(o => { o.value = o.textContent.trim(); });
+document.querySelectorAll("option:not([value])").forEach(o => { o.value = o.textContent.trim(); });
 langBtn.addEventListener("click", () => setLang(lang === "ur" ? "en" : "ur"));
 (function () {
   let l = "en";
@@ -880,6 +947,107 @@ if ("serviceWorker" in navigator) {
     dp.prompt(); await dp.userChoice; dp = null; btn.hidden = true;
   });
   addEventListener("appinstalled", () => { btn.hidden = true; });
+})();
+
+// City selector (shared with experts.html via localStorage)
+function getCity() { try { return localStorage.getItem("bd_city") || "All"; } catch (e) { return "All"; } }
+function cityOK(p) { const c = getCity(); return c === "All" || !p.cities || !p.cities.length || p.cities.includes(c); }
+(function () {
+  const sel = document.getElementById("citySel");
+  sel.value = getCity();
+  if (sel.value === "") sel.value = "All";
+  function prefill() {
+    const c = getCity();
+    document.querySelectorAll('form [name="city"]').forEach(i => {
+      if (c === "All") { if (i.dataset.auto) { i.value = ""; delete i.dataset.auto; } }
+      else if (!i.value || i.dataset.auto) { i.value = c; i.dataset.auto = "1"; }
+    });
+  }
+  prefill();
+  sel.addEventListener("change", () => {
+    try { localStorage.setItem("bd_city", sel.value); } catch (e) {}
+    prefill(); dispatchEvent(new Event("citychange"));
+  });
+})();
+
+// Fault Finder + Price Estimator (data loads lazily, when the section nears the screen)
+(function () {
+  const money = n => "Rs " + Number(n).toLocaleString("en-PK");
+  const wa = t => "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t);
+  const cityLine = () => getCity() === "All" ? "" : "\nCity: " + getCity();
+  function mk(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+  // --- Fault Finder ---
+  const box = document.getElementById("ff"), stepEl = document.getElementById("ffStep"),
+        qEl = document.getElementById("ffQ"), optsEl = document.getElementById("ffOpts"),
+        back = document.getElementById("ffBack"), reset = document.getElementById("ffReset");
+  let data, cur, hist = [], path = [], onResult = false;
+
+  function showNode(id) {
+    cur = id; onResult = false;
+    const n = data.nodes[id];
+    stepEl.textContent = ""; stepEl.append(mk("span", "", "Step"), " " + (hist.length + 1));
+    qEl.textContent = n.q; qEl.hidden = false; optsEl.innerHTML = "";
+    n.options.forEach(o => {
+      const b = mk("button", "opt pop", o.label); b.type = "button";
+      b.onclick = () => { path.push(o.label); if (o.result) showResult(o.result); else { hist.push(id); showNode(o.next); } };
+      optsEl.append(b);
+    });
+    back.hidden = reset.hidden = hist.length === 0;
+    translate(box);
+  }
+  function showResult(rid) {
+    onResult = true;
+    const r = data.results[rid];
+    stepEl.textContent = ""; qEl.hidden = true; optsEl.innerHTML = "";
+    const d = mk("div", "res pop");
+    d.append(mk("div", "sub", "Likely issue"), mk("h4", "", r.issue), mk("p", "", r.detail),
+             mk("div", "sub", "Estimated cost"), mk("div", "range", money(r.min) + " – " + money(r.max)),
+             mk("p", "note", "Estimate only. The expert confirms the final price after inspection."));
+    const a = mk("a", "btn btn-red", "Book this fix on WhatsApp"); a.target = "_blank"; a.rel = "noopener";
+    a.href = wa("Hi BassDrive, I need help with my car audio.\nProblem: " + path.join(" > ") + "\nLikely issue: " + r.issue +
+                "\nEstimate: " + money(r.min) + " – " + money(r.max) + cityLine());
+    d.append(a); optsEl.append(d);
+    back.hidden = reset.hidden = false;
+    translate(box);
+  }
+  back.onclick = () => {
+    path.pop();
+    if (onResult) showNode(cur); else showNode(hist.pop());
+  };
+  reset.onclick = () => { hist = []; path = []; showNode(data.start); };
+
+  // --- Price Estimator ---
+  const svcSel = document.getElementById("estSvc"), carSel = document.getElementById("estCar"),
+        out = document.getElementById("estOut"), estWa = document.getElementById("estWa"), est = document.getElementById("est");
+  let prices;
+  function updateEst() {
+    const s = prices.services.find(x => x.id === svcSel.value), c = carSel.value, r = s.prices[c];
+    out.textContent = ""; out.className = "pop";
+    out.append(mk("div", "sub", "Estimated cost"), mk("div", "range", money(r[0]) + " – " + money(r[1])),
+               mk("p", "note", "Estimate only. The expert confirms the final price after inspection."));
+    estWa.href = wa("Hi BassDrive, I want a quote.\nService: " + s.label + "\nCar: " + carSel.options[carSel.selectedIndex].text +
+                    "\nEstimate: " + money(r[0]) + " – " + money(r[1]) + cityLine());
+    translate(est);
+  }
+
+  let loaded = false;
+  function load() {
+    if (loaded) return; loaded = true;
+    fetch("faults.json").then(r => r.json()).then(d => { data = d; showNode(d.start); })
+      .catch(() => { qEl.textContent = "Fault Finder is unavailable right now. Message us on WhatsApp."; });
+    fetch("prices.json").then(r => r.json()).then(d => {
+      prices = d;
+      d.services.forEach(s => { const o = mk("option", "", s.label); o.value = s.id; svcSel.append(o); });
+      d.carTypes.forEach(c => { const o = mk("option", "", c.label); o.value = c.id; carSel.append(o); });
+      svcSel.onchange = carSel.onchange = updateEst; updateEst();
+    }).catch(() => { out.textContent = "Estimator is unavailable right now."; });
+  }
+  const sec = document.getElementById("tools");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); load(); } }, { rootMargin: "500px" });
+    io.observe(sec);
+  } else load();
 })();
 
 // First-visit loader: logo beat, gone in under a second

@@ -1,0 +1,208 @@
+{
+  "_note": "Placeholder data. Edit freely. A node has a question + options; an option goes to another node (next) or to a result. Prices are PKR.",
+  "start": "q1",
+  "nodes": {
+    "q1": {
+      "q": "Which part of your car audio has the problem?",
+      "options": [
+        {
+          "label": "Head unit / tape / screen",
+          "next": "q_hu"
+        },
+        {
+          "label": "Speakers or sound quality",
+          "next": "q_sp"
+        },
+        {
+          "label": "Battery drain / wiring / fuses",
+          "next": "q_el"
+        },
+        {
+          "label": "Camera, sensors or lights",
+          "next": "q_cm"
+        }
+      ]
+    },
+    "q_hu": {
+      "q": "What does the head unit do?",
+      "options": [
+        {
+          "label": "Won't turn on at all",
+          "result": "r_hu_power"
+        },
+        {
+          "label": "Turns on but there is no sound",
+          "next": "q_hu_ns"
+        },
+        {
+          "label": "Screen freezes or restarts",
+          "result": "r_hu_freeze"
+        },
+        {
+          "label": "Bluetooth, USB or radio not working",
+          "result": "r_hu_conn"
+        }
+      ]
+    },
+    "q_hu_ns": {
+      "q": "Do you have an external amplifier?",
+      "options": [
+        {
+          "label": "Yes, I have an amplifier",
+          "result": "r_amp_protect"
+        },
+        {
+          "label": "No, the unit drives the speakers directly",
+          "result": "r_hu_ns"
+        }
+      ]
+    },
+    "q_sp": {
+      "q": "What do you hear?",
+      "options": [
+        {
+          "label": "Crackling or distortion",
+          "result": "r_sp_distort"
+        },
+        {
+          "label": "One speaker is dead",
+          "result": "r_sp_one"
+        },
+        {
+          "label": "Weak bass or no bass",
+          "result": "r_sp_bass"
+        },
+        {
+          "label": "Humming or whining noise",
+          "result": "r_sp_noise"
+        }
+      ]
+    },
+    "q_el": {
+      "q": "What is happening?",
+      "options": [
+        {
+          "label": "Battery drains overnight",
+          "result": "r_el_drain"
+        },
+        {
+          "label": "A fuse keeps blowing",
+          "result": "r_el_fuse"
+        },
+        {
+          "label": "Sound cuts out on bumps or turns",
+          "result": "r_el_loose"
+        }
+      ]
+    },
+    "q_cm": {
+      "q": "Which one?",
+      "options": [
+        {
+          "label": "Reverse camera shows no picture",
+          "result": "r_cm_cam"
+        },
+        {
+          "label": "Parking sensors not working",
+          "result": "r_cm_sens"
+        },
+        {
+          "label": "LED or headlights flicker or fail",
+          "result": "r_cm_led"
+        }
+      ]
+    }
+  },
+  "results": {
+    "r_hu_power": {
+      "issue": "Blown fuse, loose power wire or failed head unit",
+      "detail": "Usually a fuse or wiring harness fault. A technician checks constant 12V, ignition feed and ground first.",
+      "min": 500,
+      "max": 3500
+    },
+    "r_hu_freeze": {
+      "issue": "Software crash or failing board / memory",
+      "detail": "Common on cheap Android units. Often fixed by a reflash or power-supply repair.",
+      "min": 1000,
+      "max": 6000
+    },
+    "r_hu_conn": {
+      "issue": "Faulty Bluetooth module, USB port or antenna connection",
+      "detail": "A loose antenna lead or a dead module. Usually a quick bench repair.",
+      "min": 800,
+      "max": 4000
+    },
+    "r_amp_protect": {
+      "issue": "Amplifier in protect mode",
+      "detail": "Caused by a shorted speaker wire, bad ground or a missing remote turn-on wire.",
+      "min": 1000,
+      "max": 5000
+    },
+    "r_hu_ns": {
+      "issue": "Muted output, loose speaker wiring or blown output stage",
+      "detail": "Check mute and fader settings first, then speaker wires and the harness.",
+      "min": 800,
+      "max": 4500
+    },
+    "r_sp_distort": {
+      "issue": "Damaged speaker cone, gain set too high or loose wiring",
+      "detail": "Lower the gain and check the speaker. A torn cone needs replacing.",
+      "min": 1500,
+      "max": 8000
+    },
+    "r_sp_one": {
+      "issue": "Disconnected or broken speaker wire, or a blown speaker",
+      "detail": "A technician tests the wire and the speaker coil with a meter.",
+      "min": 600,
+      "max": 4000
+    },
+    "r_sp_bass": {
+      "issue": "Subwoofer or amp not powered, wrong phase or blown woofer",
+      "detail": "Check amp power light and remote wire. A blown woofer needs replacing.",
+      "min": 1000,
+      "max": 7000
+    },
+    "r_sp_noise": {
+      "issue": "Ground loop or poor ground (often alternator whine)",
+      "detail": "Fixed by cleaning the ground point and rerouting power and signal cables.",
+      "min": 1000,
+      "max": 4000
+    },
+    "r_el_drain": {
+      "issue": "Memory and ignition wires swapped, or amp staying on",
+      "detail": "A parasitic draw test finds the circuit. Usually a wiring correction.",
+      "min": 1500,
+      "max": 5000
+    },
+    "r_el_fuse": {
+      "issue": "Short circuit or undersized wiring",
+      "detail": "Do not fit a bigger fuse. The short must be traced and repaired.",
+      "min": 1500,
+      "max": 6000
+    },
+    "r_el_loose": {
+      "issue": "Loose connector or poor ground connection",
+      "detail": "Re-crimp or re-seat connectors and secure the ground to bare metal.",
+      "min": 700,
+      "max": 3000
+    },
+    "r_cm_cam": {
+      "issue": "Cable break, loose video connector or failed camera",
+      "detail": "Often the cable breaks at the tailgate hinge.",
+      "min": 1000,
+      "max": 5000
+    },
+    "r_cm_sens": {
+      "issue": "Faulty sensor, damaged wiring or control box",
+      "detail": "Each sensor is tested to find the dead one.",
+      "min": 1500,
+      "max": 6000
+    },
+    "r_cm_led": {
+      "issue": "Bad driver / ballast, poor connection or low-quality bulbs",
+      "detail": "Flicker is usually a weak driver or a loose plug.",
+      "min": 1000,
+      "max": 5500
+    }
+  }
+}

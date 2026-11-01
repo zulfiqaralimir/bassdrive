@@ -1,0 +1,83 @@
+[
+  {
+    "id": "ex-001",
+    "name": "Sample Expert 1",
+    "skills": [
+      "Head Units",
+      "Wiring"
+    ],
+    "city": "Islamabad",
+    "rating": 4.9,
+    "jobs": 320,
+    "whatsapp": "923225150501",
+    "photo": "images/experts/placeholder.svg"
+  },
+  {
+    "id": "ex-002",
+    "name": "Sample Expert 2",
+    "skills": [
+      "Amps",
+      "Woofers",
+      "Speakers"
+    ],
+    "city": "Islamabad",
+    "rating": 4.7,
+    "jobs": 210,
+    "whatsapp": "923225150501",
+    "photo": "images/experts/placeholder.svg"
+  },
+  {
+    "id": "ex-003",
+    "name": "Sample Expert 3",
+    "skills": [
+      "Cameras",
+      "Lights"
+    ],
+    "city": "Rawalpindi",
+    "rating": 4.8,
+    "jobs": 150,
+    "whatsapp": "923225150501",
+    "photo": "images/experts/placeholder.svg"
+  },
+  {
+    "id": "ex-004",
+    "name": "Sample Expert 4",
+    "skills": [
+      "Wiring",
+      "Diagnosis"
+    ],
+    "city": "Wah Cantt",
+    "rating": 4.6,
+    "jobs": 95,
+    "whatsapp": "923225150501",
+    "photo": "images/experts/placeholder.svg"
+  },
+  {
+    "id": "ex-005",
+    "name": "Sample Expert 5",
+    "skills": [
+      "Head Units",
+      "Speakers",
+      "Amps"
+    ],
+    "city": "Lahore",
+    "rating": 4.9,
+    "jobs": 410,
+    "whatsapp": "923225150501",
+    "photo": "images/experts/placeholder.svg"
+  },
+  {
+    "id": "ex-006",
+    "name": "Sample Expert 6",
+    "skills": [
+      "Lights",
+      "Cameras",
+      "Wiring"
+    ],
+    "city": "Lahore",
+    "rating": 4.5,
+    "jobs": 120,
+    "whatsapp": "923225150501",
+    "photo": "images/experts/placeholder.svg"
+  }
+]

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Car Audio Experts in Pakistan — BassDrive</title>
+<meta name="description" content="Meet BassDrive's car electronics and sound system experts in Islamabad, Rawalpindi, Wah Cantt and Lahore. See ratings, skills and jobs done, and message them on WhatsApp.">
+<link rel="canonical" href="https://bassdrive.vercel.app/experts.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b0b0d">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BassDrive">
+<meta property="og:title" content="Car Audio Experts in Pakistan — BassDrive">
+<meta property="og:description" content="Verified car electronics and sound system experts near you. Message them on WhatsApp.">
+<meta property="og:url" content="https://bassdrive.vercel.app/experts.html">
+<meta property="og:image" content="https://bassdrive.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared.css">
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a href="/" class="logo"><svg viewBox="0 0 64 64" width="26" height="26" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="#141418" stroke="#ff3b2f" stroke-width="4"/><circle cx="32" cy="32" r="14" fill="#0b0b0d" stroke="#ffb020" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#ff3b2f"/></svg>Bass<span>Drive</span></a>
+    <div class="links"><a href="/">Home</a><a href="/experts.html" class="on">Experts</a><a href="/blog/">Blog</a></div>
+  </div>
+</nav>
+
+<header class="ph">
+  <div class="wrap">
+    <div class="crumbs"><a href="/">Home</a> / Experts</div>
+    <h1>Our <em>Experts</em></h1>
+    <p>Skilled car electronics and sound technicians near you. Pick your city to see who is available, then message them on WhatsApp.</p>
+    <label class="cityrow">City
+      <select id="citySel" class="lang" aria-label="Select city">
+        <option value="All">All cities</option><option>Islamabad</option><option>Rawalpindi</option><option>Wah Cantt</option><option>Lahore</option>
+      </select>
+    </label>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="grid" id="eg"><p class="msg">Loading experts…</p></div>
+    <div class="cta"><span>Are you a technician?</span><a class="btn btn-amber" href="/#book">Join as Expert</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><strong style="color:var(--text)">BassDrive</strong> — Car Electronics &amp; Sound Experts</span>
+    <span><a href="/">Home</a> · <a href="/blog/">Blog</a></span>
+  </div>
+</footer>
+
+<script>
+var CITY_KEY = "bd_city";
+function getCity() { try { return localStorage.getItem(CITY_KEY) || "All"; } catch (e) { return "All"; } }
+var sel = document.getElementById("citySel"), grid = document.getElementById("eg"), experts = [];
+sel.value = getCity();
+if (sel.value === "") sel.value = "All";
+sel.addEventListener("change", function () {
+  try { localStorage.setItem(CITY_KEY, sel.value); } catch (e) {}
+  render();
+});
+
+function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+function msg(t) { grid.innerHTML = ""; grid.appendChild(el("p", "msg", t)); }
+
+function card(x, i) {
+  var c = el("article", "card ex up"); c.style.setProperty("--d", (i % 3) * 0.08 + "s");
+  var top = el("div", "ex-top"), img = el("img"); img.src = "/" + String(x.photo).replace(/^\//, ""); img.alt = x.name; img.width = 72; img.height = 72; img.loading = "lazy";
+  img.onerror = function () { img.onerror = null; img.src = "/images/experts/placeholder.svg"; };
+  var who = el("div"); who.append(el("h3", "", x.name), el("div", "city", "📍 " + x.city));
+  top.append(img, who);
+  var rate = el("div", "rate", "★ " + Number(x.rating).toFixed(1));
+  var chips = el("div", "chips"); (x.skills || []).forEach(function (s) { chips.append(el("span", "", s)); });
+  var st = el("div", "stats2"), jobs = el("span"); jobs.append(el("b", "", Number(x.jobs).toLocaleString("en-PK")), " jobs done");
+  st.append(jobs, el("span", "", "Verified"));
+  var a = el("a", "btn btn-red", "Message on WhatsApp"); a.target = "_blank"; a.rel = "noopener";
+  a.href = "https://wa.me/" + x.whatsapp + "?text=" + encodeURIComponent("Hi " + x.name + ", I found your profile on BassDrive. I need help with my car audio." + (getCity() === "All" ? "" : "\nCity: " + getCity()));
+  c.append(top, rate, chips, st, a);
+  return c;
+}
+
+function render() {
+  var c = getCity(), list = experts.filter(function (x) { return c === "All" || x.city === c; })
+    .sort(function (a, b) { return b.rating - a.rating; });
+  if (!list.length) return msg("No experts in " + c + " yet. Try another city, or message us on WhatsApp.");
+  grid.innerHTML = "";
+  list.forEach(function (x, i) { grid.appendChild(card(x, i)); });
+}
+
+fetch("/experts.json").then(function (r) { return r.json(); }).then(function (d) { experts = d; render(); })
+  .catch(function () { msg("Experts are unavailable right now. Message us on WhatsApp."); });
+</script>
+</body>
+</html>
