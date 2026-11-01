@@ -121,7 +121,41 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .dots button{width:10px;height:10px;border-radius:50%;border:0;background:var(--line);cursor:pointer;padding:0}
 .dots button.on{background:var(--accent)}
 
+/* --- More animation --- */
+/* 3D tilt + glow (rotation vars set by JS on fine-pointer devices only) */
+.card{position:relative;transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));will-change:transform}
+.card:hover{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-3px);box-shadow:0 12px 32px rgba(255,59,47,.18),0 0 0 1px rgba(255,176,32,.15)}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,59,47,.22),rgba(255,176,32,.10) 45%,transparent 70%)}
+.card:hover::before{opacity:1}
+
+/* Sound-wave lines behind hero */
+.waves{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.55}
+.waves svg{position:absolute;left:0;width:200%;height:120px;will-change:transform;animation:drift var(--t,16s) linear infinite}
+@keyframes drift{to{transform:translateX(-50%)}}
+
+/* Typewriter */
+.tw{position:relative;display:inline-block}
+.tw-ghost{opacity:0}
+.tw-typed{position:absolute;left:0;right:0;top:0}
+.tw-typed.caret::after{content:"";display:inline-block;width:3px;height:.85em;margin-left:3px;vertical-align:-.05em;background:var(--accent2);animation:blink .7s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Shine sweep on red buttons */
+.btn-red{position:relative;overflow:hidden}
+.btn-red::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+.btn-red:hover::after{animation-duration:1.2s}
+@keyframes shine{0%,55%{left:-80%}100%{left:140%}}
+
+/* Logo beat */
+.logo span{display:inline-block;animation:beat 1.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}24%{transform:scale(1)}36%{transform:scale(1.08)}48%{transform:scale(1)}}
+
 @media(prefers-reduced-motion:reduce){
+  .waves svg,.btn-red::after,.logo span,.tw-typed.caret::after{animation:none}
+  .btn-red::after{display:none}
+  .card,.card:hover{transform:none}
   .js .reveal{opacity:1;translate:none;transition:none}
   .speaker .ring,.speaker .cone,.speaker .dome{animation:none}
   .speaker .ring:nth-of-type(1){opacity:.4;transform:scale(.9)}
@@ -350,6 +384,67 @@ document.querySelectorAll("[data-count]").forEach(el => statIO.observe(el));
   slider.addEventListener("mouseleave", restart);
   go(0); restart();
 })();
+
+// Sound-wave lines behind hero (CSS-driven loop, GPU transform only)
+(function () {
+  const box = document.createElement("div");
+  box.className = "waves"; box.setAttribute("aria-hidden", "true");
+  const layers = [
+    { top: "18%", amp: 46, color: "#ff3b2f", op: .35, t: 18 },
+    { top: "42%", amp: 70, color: "#ffb020", op: .25, t: 26 },
+    { top: "64%", amp: 34, color: "#ff3b2f", op: .3,  t: 14 }
+  ];
+  layers.forEach(l => {
+    const d = "M0 60 q75 -" + l.amp + " 150 0" + " t150 0".repeat(15); // 16 half-waves, period 300
+    const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    s.setAttribute("viewBox", "0 0 2400 120");
+    s.setAttribute("preserveAspectRatio", "none");
+    s.style.top = l.top; s.style.setProperty("--t", l.t + "s");
+    s.innerHTML = '<path d="' + d + '" fill="none" stroke="' + l.color + '" stroke-opacity="' + l.op + '" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+    box.appendChild(s);
+  });
+  document.querySelector(".hero").prepend(box);
+})();
+
+// Typewriter on "Our experts can."
+(function () {
+  const em = document.querySelector(".hero h1 em");
+  if (!em || reduce) return;
+  const text = em.textContent;
+  em.className = "tw";
+  em.innerHTML = '<span class="tw-ghost"></span><span class="tw-typed caret" aria-hidden="true"></span>';
+  em.firstChild.textContent = text;
+  const typed = em.lastChild;
+  let i = 0;
+  setTimeout(function step() {
+    typed.textContent = text.slice(0, ++i);
+    if (i < text.length) setTimeout(step, 65);
+    else setTimeout(() => typed.classList.remove("caret"), 2500);
+  }, 500);
+})();
+
+// 3D tilt + mouse-follow glow (mouse devices only)
+if (!reduce && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+  document.querySelectorAll(".card").forEach(card => {
+    let raf = 0;
+    card.addEventListener("pointermove", e => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = card.getBoundingClientRect(),
+              x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        card.style.setProperty("--ry", ((x - .5) * 12).toFixed(2) + "deg");
+        card.style.setProperty("--rx", ((.5 - y) * 12).toFixed(2) + "deg");
+        card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+        card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+      });
+    });
+    card.addEventListener("pointerleave", () => {
+      cancelAnimationFrame(raf); raf = 0;
+      card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg");
+    });
+  });
+}
 
 send(document.getElementById("customer"), "🚗 BassDrive — New Booking");
 send(document.getElementById("expert"), "🔧 BassDrive — Expert Application");
