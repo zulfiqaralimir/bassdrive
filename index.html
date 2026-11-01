@@ -1,102 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BassDrive – Car Audio & Electronics Experts</title>
-<meta name="description" content="BassDrive connects car owners with skilled car electronics and sound system technicians: head units, speakers, amps, wiring, cameras and lights.">
+<title>BassDrive — Car Electronics & Sound Experts</title>
+<meta name="description" content="BassDrive connects car owners with expert technicians for car electronics, tape/head units, sound systems and wiring faults — even the ones dealers can't fix.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0b0d;--card:#16161a;--line:#2a2a31;--text:#f2f2f4;--mute:#a0a0aa;--red:#e11d2e;--amber:#f5a524}
+:root{
+  --bg:#0b0b0d; --bg2:#141418; --card:#1a1a20; --line:#2a2a33;
+  --text:#f2f2f5; --muted:#a0a0ad; --accent:#ff3b2f; --accent2:#ffb020; --ok:#22c55e;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.6}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
-header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,11,13,.95);z-index:5}
-header .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
-.brand{font-weight:800;font-size:1.3rem}.brand span{color:var(--red)}
-nav a{margin-left:18px;color:var(--mute);font-size:.95rem}nav a:hover{color:var(--amber)}
-.hero{padding:80px 0 60px;text-align:center}
-.hero h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.1}
-.hero h1 em{font-style:normal;color:var(--amber)}
-.hero p{color:var(--mute);max-width:560px;margin:18px auto 28px}
-.btn{display:inline-block;background:var(--red);color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;border:0;cursor:pointer;font-size:1rem}
-.btn.alt{background:transparent;border:1px solid var(--amber);color:var(--amber);margin-left:8px}
-section{padding:50px 0}
-h2{font-size:1.7rem;margin-bottom:24px}h2 span{color:var(--amber)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
-.card h3{color:var(--amber);margin-bottom:6px}.card p{color:var(--mute);font-size:.92rem}
-.num{color:var(--red);font-weight:800;font-size:1.6rem}
-form{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:12px}
-input,select,textarea{width:100%;background:#0f0f12;border:1px solid var(--line);color:var(--text);padding:11px;border-radius:8px;font:inherit}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--amber)}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-footer{border-top:1px solid var(--line);padding:24px 0;text-align:center;color:var(--mute);font-size:.9rem}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:"Archivo Black",sans-serif;line-height:1.1;letter-spacing:-.5px}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:10;background:rgba(11,11,13,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:"Archivo Black";font-size:22px}
+.logo span{color:var(--accent)}
+.links{display:flex;gap:24px;font-size:14px;color:var(--muted)}
+.links a:hover{color:var(--text)}
+.btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px;border:0;cursor:pointer;transition:.2s}
+.btn-red{background:var(--accent);color:#fff}
+.btn-red:hover{background:#e22c21}
+.btn-ghost{border:1px solid var(--line);color:var(--text);background:transparent}
+.btn-ghost:hover{border-color:var(--accent2);color:var(--accent2)}
+@media(max-width:760px){.links{display:none}}
+
+/* Hero */
+.hero{padding:90px 0 70px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 300px at 80% 20%,rgba(255,59,47,.18),transparent 70%),radial-gradient(500px 300px at 10% 90%,rgba(255,176,32,.10),transparent 70%)}
+.hero .wrap{position:relative}
+.tag{display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:99px;font-size:13px;color:var(--accent2);margin-bottom:20px}
+.hero h1{font-size:clamp(36px,6vw,64px);max-width:760px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--muted);font-size:18px;max-width:600px;margin:20px 0 32px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.eq{display:flex;gap:5px;align-items:flex-end;height:50px;margin-top:50px}
+.eq i{width:8px;background:linear-gradient(var(--accent2),var(--accent));border-radius:3px;animation:b 1s ease-in-out infinite alternate}
+@keyframes b{from{height:10%}to{height:100%}}
+@media(prefers-reduced-motion:reduce){.eq i{animation:none;height:60%}}
+
+/* Sections */
+section{padding:70px 0;border-top:1px solid var(--line)}
+.head{margin-bottom:36px}
+.head h2{font-size:clamp(28px,4vw,40px)}
+.head p{color:var(--muted);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;transition:.2s}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.ico{font-size:28px;margin-bottom:12px}
+.card h3{font-size:18px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:15px}
+
+/* Story */
+.story{background:var(--bg2)}
+.story .box{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.story blockquote{font-size:20px;border-left:4px solid var(--accent);padding-left:20px;color:var(--text)}
+.story p{color:var(--muted);margin-bottom:12px}
+@media(max-width:760px){.story .box{grid-template-columns:1fr}}
+
+/* Steps */
+.step .n{font-family:"Archivo Black";font-size:40px;color:var(--accent2)}
+
+/* Forms */
+.forms{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:760px){.forms{grid-template-columns:1fr}}
+form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:12px}
+form h3{font-size:22px}
+form .sub{color:var(--muted);font-size:14px;margin-bottom:6px}
+label{font-size:13px;color:var(--muted)}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px;color:var(--text);font:inherit;font-size:15px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+.expert{border-color:rgba(255,176,32,.4)}
+.btn-amber{background:var(--accent2);color:#111}
+.btn-amber:hover{background:#ffc04d}
+
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.wa{position:fixed;right:18px;bottom:18px;background:var(--ok);color:#fff;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:26px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:20}
 </style>
 </head>
 <body>
-<header><div class="wrap"><a class="brand" href="#">Bass<span>Drive</span></a>
-<nav><a href="#services">Services</a><a href="#how">How it works</a><a href="#book">Book</a><a href="#join">Join</a></nav></div></header>
 
-<div class="wrap hero">
-<h1>Find a trusted <em>car audio</em> expert near you</h1>
-<p>Dealers can't fix it? BassDrive connects car owners with skilled sound system and electronics technicians.</p>
-<a class="btn" href="#book">Book a Fix</a><a class="btn alt" href="#join">Join as Expert</a>
-</div>
+<nav>
+  <div class="wrap">
+    <a href="#" class="logo">Bass<span>Drive</span></a>
+    <div class="links">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#book">Book a fix</a>
+      <a href="#book">Join as expert</a>
+    </div>
+    <a href="#book" class="btn btn-red">Book Now</a>
+  </div>
+</nav>
 
-<section id="services"><div class="wrap"><h2>What we <span>fix</span></h2>
-<div class="grid">
-<div class="card"><h3>Head Units</h3><p>Tape decks, Android &amp; touchscreen stereos.</p></div>
-<div class="card"><h3>Speakers</h3><p>Installation, upgrades, tuning.</p></div>
-<div class="card"><h3>Amps &amp; Subs</h3><p>Bass setups done right.</p></div>
-<div class="card"><h3>Wiring</h3><p>Faults, shorts, clean rewiring.</p></div>
-<div class="card"><h3>Cameras</h3><p>Reverse, dash and 360° cameras.</p></div>
-<div class="card"><h3>Lights</h3><p>LED, HID, interior and custom lighting.</p></div>
-</div></div></section>
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">⚡ Car Electronics & Sound Specialists</span>
+    <h1>Dealer couldn't fix it? <em>Our experts can.</em></h1>
+    <p>BassDrive connects you with skilled, verified technicians for car tape/head units, sound systems, wiring and electrical faults — fast, fair and done right.</p>
+    <div class="cta">
+      <a href="#book" class="btn btn-red">Get it Fixed</a>
+      <a href="#book" class="btn btn-ghost">I'm a Technician</a>
+    </div>
+    <div class="eq" aria-hidden="true" id="eq"></div>
+  </div>
+</header>
 
-<section id="how"><div class="wrap"><h2>How it <span>works</span></h2>
-<div class="grid">
-<div class="card"><div class="num">1</div><h3>Tell us the problem</h3><p>Fill the form, it opens WhatsApp.</p></div>
-<div class="card"><div class="num">2</div><h3>We match an expert</h3><p>A skilled technician in your city.</p></div>
-<div class="card"><div class="num">3</div><h3>Get it fixed</h3><p>Agree price and time directly.</p></div>
-</div></div></section>
+<section id="services">
+  <div class="wrap">
+    <div class="head"><h2>What we fix & install</h2><p>From a dead stereo to a full sound upgrade.</p></div>
+    <div class="grid">
+      <div class="card"><div class="ico">📻</div><h3>Tape & Head Units</h3><p>Not powering on, no sound, stuck screens, Bluetooth and Android panel issues.</p></div>
+      <div class="card"><div class="ico">🔊</div><h3>Sound Systems</h3><p>Speakers, woofers, amplifiers, tuning and complete audio upgrades.</p></div>
+      <div class="card"><div class="ico">🔌</div><h3>Wiring & Electrical</h3><p>Short circuits, fuse problems, battery drain and hidden wiring faults.</p></div>
+      <div class="card"><div class="ico">📷</div><h3>Cameras & Sensors</h3><p>Reverse cameras, parking sensors, dash cams and installation.</p></div>
+      <div class="card"><div class="ico">💡</div><h3>Lights & Accessories</h3><p>LED, ambient lighting, alarms and central locking.</p></div>
+      <div class="card"><div class="ico">🛠️</div><h3>Diagnosis</h3><p>The tricky faults others gave up on — tested and traced properly.</p></div>
+    </div>
+  </div>
+</section>
 
-<section><div class="wrap two">
-<div id="book"><h2>Book a <span>Fix</span></h2>
-<form id="bookForm">
-<input name="name" placeholder="Your name" required>
-<input name="city" placeholder="City" required>
-<input name="car" placeholder="Car make, model, year" required>
-<select name="service" required><option value="">Service needed</option><option>Head unit</option><option>Speakers</option><option>Amp / Subwoofer</option><option>Wiring</option><option>Camera</option><option>Lights</option><option>Other</option></select>
-<textarea name="issue" rows="3" placeholder="Describe the problem"></textarea>
-<button class="btn" type="submit">Send on WhatsApp</button>
-</form></div>
-<div id="join"><h2>Join as <span>Expert</span></h2>
-<form id="joinForm">
-<input name="name" placeholder="Your name" required>
-<input name="city" placeholder="City" required>
-<input name="skill" placeholder="Main skill (e.g. amps, wiring)" required>
-<input name="exp" type="number" min="0" placeholder="Years of experience" required>
-<textarea name="about" rows="3" placeholder="Shop / past work (optional)"></textarea>
-<button class="btn" type="submit">Apply on WhatsApp</button>
-</form></div>
-</div></section>
+<section class="story">
+  <div class="wrap box">
+    <blockquote>"My car tape stopped working. Even the dealer couldn't find the problem — but one skilled technician fixed it."</blockquote>
+    <div>
+      <p><strong style="color:var(--text)">That's why BassDrive exists.</strong></p>
+      <p>Talented technicians often lack customers. Car owners often can't find the right expert. We bring both together.</p>
+      <p>Every expert is checked for real skill before joining.</p>
+    </div>
+  </div>
+</section>
 
-<footer>© <span id="y"></span> BassDrive · <a href="https://wa.me/923225150501" style="color:var(--amber)">WhatsApp us</a></footer>
+<section id="how">
+  <div class="wrap">
+    <div class="head"><h2>How it works</h2></div>
+    <div class="grid">
+      <div class="card step"><div class="n">01</div><h3>Tell us the problem</h3><p>Fill the short form or message us on WhatsApp.</p></div>
+      <div class="card step"><div class="n">02</div><h3>We match an expert</h3><p>The right technician for your car and fault.</p></div>
+      <div class="card step"><div class="n">03</div><h3>Get it fixed</h3><p>At the workshop or your location. Pay after it works.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="book">
+  <div class="wrap">
+    <div class="head"><h2>Get started</h2><p>Both forms open WhatsApp with your details filled in.</p></div>
+    <div class="forms">
+      <form id="customer">
+        <h3>🚗 Book a Fix</h3>
+        <div class="sub">For car owners</div>
+        <label>Your name<input name="name" required></label>
+        <label>Phone<input name="phone" type="tel" required></label>
+        <label>Car make & model<input name="car" placeholder="e.g. Toyota Corolla 2018" required></label>
+        <label>Service
+          <select name="service">
+            <option>Tape / Head Unit</option><option>Sound System</option><option>Wiring & Electrical</option>
+            <option>Cameras & Sensors</option><option>Lights & Accessories</option><option>Other / Not sure</option>
+          </select>
+        </label>
+        <label>City / Area<input name="city" required></label>
+        <label>Describe the problem<textarea name="issue" rows="3"></textarea></label>
+        <button class="btn btn-red" type="submit">Send via WhatsApp</button>
+      </form>
+
+      <form id="expert" class="expert">
+        <h3>🔧 Join as Expert</h3>
+        <div class="sub">For technicians who want more customers</div>
+        <label>Your name<input name="name" required></label>
+        <label>Phone<input name="phone" type="tel" required></label>
+        <label>City / Area<input name="city" required></label>
+        <label>Speciality
+          <select name="skill">
+            <option>Tape / Head Units</option><option>Sound & Audio</option><option>Auto Electrician</option><option>All-round</option>
+          </select>
+        </label>
+        <label>Years of experience<input name="exp" type="number" min="0"></label>
+        <label>Workshop? (name/location, if any)<input name="shop"></label>
+        <button class="btn btn-amber" type="submit">Apply via WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><strong style="color:var(--text)">BassDrive</strong> — Car Electronics & Sound Experts</span>
+    <span>© <span id="yr"></span> BassDrive. All rights reserved.</span>
+  </div>
+</footer>
+
+<a class="wa" id="waBtn" aria-label="Chat on WhatsApp">💬</a>
 
 <script>
-var WA="923225150501";
-document.getElementById("y").textContent=new Date().getFullYear();
-function send(id,title){
-  document.getElementById(id).addEventListener("submit",function(e){
+// Business WhatsApp number (country code, no + or spaces)
+const WHATSAPP = "923225150501";
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+document.getElementById("waBtn").href = `https://wa.me/${WHATSAPP}`;
+
+const eq = document.getElementById("eq");
+for (let i = 0; i < 32; i++) {
+  const b = document.createElement("i");
+  b.style.animationDelay = (Math.random()).toFixed(2) + "s";
+  b.style.animationDuration = (0.6 + Math.random() * 0.8).toFixed(2) + "s";
+  eq.appendChild(b);
+}
+
+function send(form, title) {
+  form.addEventListener("submit", e => {
     e.preventDefault();
-    var d=new FormData(e.target),t="*"+title+"*\n";
-    d.forEach(function(v,k){if(v)t+=k+": "+v+"\n"});
-    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(t),"_blank");
+    const lines = [title];
+    for (const [k, v] of new FormData(form)) if (v) lines.push(`${k}: ${v}`);
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
   });
 }
-send("bookForm","BassDrive – Book a Fix");
-send("joinForm","BassDrive – Join as Expert");
+send(document.getElementById("customer"), "🚗 BassDrive — New Booking");
+send(document.getElementById("expert"), "🔧 BassDrive — Expert Application");
 </script>
 </body>
 </html>
