@@ -85,7 +85,50 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
 footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:14px}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .wa{position:fixed;right:18px;bottom:18px;background:var(--ok);color:#fff;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:26px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:20}
+
+/* --- Animations --- */
+/* Scroll reveal (only hidden when JS is running) */
+.js .reveal{opacity:0;translate:0 28px;transition:opacity .7s var(--d,0s),translate .7s var(--d,0s),transform .2s,border-color .2s}
+.js .reveal.in{opacity:1;translate:0 0}
+
+/* Pulsing speaker */
+.speaker{position:absolute;right:20px;top:50%;width:260px;height:260px;margin-top:-130px}
+.speaker svg{width:100%;height:100%;overflow:visible}
+.speaker .ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:0;transform-origin:130px 130px;animation:ring 2.4s ease-out infinite}
+.speaker .ring:nth-of-type(2){animation-delay:.8s;stroke:var(--accent2)}
+.speaker .ring:nth-of-type(3){animation-delay:1.6s}
+.speaker .cone{transform-origin:130px 130px;animation:thump 1.2s ease-in-out infinite}
+.speaker .dome{transform-origin:130px 130px;animation:thump 1.2s ease-in-out infinite reverse}
+@keyframes ring{0%{transform:scale(.55);opacity:.7}100%{transform:scale(1.25);opacity:0}}
+@keyframes thump{0%,100%{transform:scale(1)}50%{transform:scale(.94)}}
+@media(max-width:1000px){.speaker{display:none}}
+
+/* Stats bar */
+.stats{padding:36px 0;background:var(--bg2)}
+.stats .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center}
+.stat b{display:block;font-family:"Archivo Black",sans-serif;font-size:clamp(28px,5vw,44px);color:var(--accent2);line-height:1.1}
+.stat span{color:var(--muted);font-size:14px}
+
+/* Testimonials */
+.slider{overflow:hidden;border-radius:14px}
+.track{display:flex;transition:transform .6s ease}
+.slide{min-width:100%;padding:30px 26px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.slide q{display:block;font-size:clamp(17px,2.4vw,22px);quotes:none}
+.slide q::before{content:"\201C";color:var(--accent);font-family:"Archivo Black"}
+.slide q::after{content:"\201D";color:var(--accent);font-family:"Archivo Black"}
+.slide cite{display:block;margin-top:14px;color:var(--accent2);font-style:normal;font-size:14px}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;background:var(--line);cursor:pointer;padding:0}
+.dots button.on{background:var(--accent)}
+
+@media(prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1;translate:none;transition:none}
+  .speaker .ring,.speaker .cone,.speaker .dome{animation:none}
+  .speaker .ring:nth-of-type(1){opacity:.4;transform:scale(.9)}
+  .track{transition:none}
+}
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
 
@@ -112,8 +155,27 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <a href="#book" class="btn btn-ghost">I'm a Technician</a>
     </div>
     <div class="eq" aria-hidden="true" id="eq"></div>
+    <div class="speaker" aria-hidden="true">
+      <svg viewBox="0 0 260 260">
+        <circle class="ring" cx="130" cy="130" r="100"/>
+        <circle class="ring" cx="130" cy="130" r="100"/>
+        <circle class="ring" cx="130" cy="130" r="100"/>
+        <circle cx="130" cy="130" r="92" fill="#141418" stroke="#2a2a33" stroke-width="3"/>
+        <circle class="cone" cx="130" cy="130" r="72" fill="#1a1a20" stroke="#ff3b2f" stroke-width="4"/>
+        <circle class="cone" cx="130" cy="130" r="48" fill="#0b0b0d" stroke="#ffb020" stroke-width="3"/>
+        <circle class="dome" cx="130" cy="130" r="22" fill="#ff3b2f"/>
+      </svg>
+    </div>
   </div>
 </header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat reveal"><b data-count="500" data-suffix="+">0</b><span>Cars Fixed</span></div>
+    <div class="stat reveal" style="--d:.1s"><b data-count="50" data-suffix="+">0</b><span>Experts</span></div>
+    <div class="stat reveal" style="--d:.2s"><b data-count="10" data-suffix="+">0</b><span>Cities</span></div>
+  </div>
+</div>
 
 <section id="services">
   <div class="wrap">
@@ -148,6 +210,21 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <div class="card step"><div class="n">02</div><h3>We match an expert</h3><p>The right technician for your car and fault.</p></div>
       <div class="card step"><div class="n">03</div><h3>Get it fixed</h3><p>At the workshop or your location. Pay after it works.</p></div>
     </div>
+  </div>
+</section>
+
+<!-- PLACEHOLDER testimonials: replace with real customer quotes before promoting the site -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="head"><h2>What owners say</h2></div>
+    <div class="slider" id="slider" aria-roledescription="carousel">
+      <div class="track" id="track">
+        <div class="slide"><q>Dealer said the head unit was dead. The technician found a loose wire and it worked the same day.</q><cite>— Car owner, Lahore</cite></div>
+        <div class="slide"><q>Fair price, clean wiring and the sound is so much better than before.</q><cite>— Car owner, Karachi</cite></div>
+        <div class="slide"><q>Since joining BassDrive I get new customers every week instead of waiting in my shop.</q><cite>— Technician, Islamabad</cite></div>
+      </div>
+    </div>
+    <div class="dots" id="dots"></div>
   </div>
 </section>
 
@@ -223,6 +300,57 @@ function send(form, title) {
     window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
   });
 }
+/* ---- Animations ---- */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Scroll reveal
+document.querySelectorAll(".head,.card,.story .box,form").forEach((el, i) => {
+  el.classList.add("reveal");
+  el.style.setProperty("--d", ((i % 3) * 0.1) + "s");
+});
+const revealIO = new IntersectionObserver((entries, o) => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); o.unobserve(en.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll(".reveal").forEach(el => revealIO.observe(el));
+
+// Count-up stats
+function countUp(el) {
+  const target = +el.dataset.count, suf = el.dataset.suffix || "";
+  if (reduce) { el.textContent = target + suf; return; }
+  const t0 = performance.now(), dur = 1600;
+  (function tick(t) {
+    const p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * e) + (p === 1 ? suf : "");
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+const statIO = new IntersectionObserver((entries, o) => {
+  entries.forEach(en => { if (en.isIntersecting) { countUp(en.target); o.unobserve(en.target); } });
+}, { threshold: 0.6 });
+document.querySelectorAll("[data-count]").forEach(el => statIO.observe(el));
+
+// Testimonials slider
+(function () {
+  const track = document.getElementById("track"), dots = document.getElementById("dots"),
+        slider = document.getElementById("slider"), n = track.children.length;
+  let cur = 0, timer;
+  for (let i = 0; i < n; i++) {
+    const b = document.createElement("button");
+    b.setAttribute("aria-label", "Show testimonial " + (i + 1));
+    b.onclick = () => { go(i); restart(); };
+    dots.appendChild(b);
+  }
+  function go(i) {
+    cur = (i + n) % n;
+    track.style.transform = `translateX(-${cur * 100}%)`;
+    [...dots.children].forEach((d, k) => d.classList.toggle("on", k === cur));
+  }
+  function restart() { clearInterval(timer); if (!reduce) timer = setInterval(() => go(cur + 1), 5000); }
+  slider.addEventListener("mouseenter", () => clearInterval(timer));
+  slider.addEventListener("mouseleave", restart);
+  go(0); restart();
+})();
+
 send(document.getElementById("customer"), "🚗 BassDrive — New Booking");
 send(document.getElementById("expert"), "🔧 BassDrive — Expert Application");
 </script>
