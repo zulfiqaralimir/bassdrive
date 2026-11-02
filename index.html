@@ -143,7 +143,10 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .speaker .dome{transform-origin:130px 130px;animation:thump 1.2s ease-in-out infinite reverse}
 @keyframes ring{0%{transform:scale(.55);opacity:.7}100%{transform:scale(1.25);opacity:0}}
 @keyframes thump{0%,100%{transform:scale(1)}50%{transform:scale(.94)}}
-@media(max-width:1000px){.speaker{display:none}}
+@media(max-width:1000px){.speaker{position:relative;right:auto;top:auto;width:150px;height:150px;margin:26px auto 0}}
+body.bass .speaker .cone,body.bass .speaker .dome{animation-duration:.45s}
+body.bass .speaker .ring{animation-duration:.9s}
+body.bass .speaker svg{filter:drop-shadow(0 0 14px rgba(255,59,47,.55))}
 
 /* Stats bar */
 .stats{padding:36px 0;background:var(--bg2)}
@@ -1147,11 +1150,11 @@ function cityOK(p) { const c = getCity(); return c === "All" || !p.cities || !p.
   const b = document.getElementById("hearBtn");
   if (!b) return;
   let au;
-  function set(on) { b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); document.body.classList.toggle("bass", on); }
+  function set(on) { b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); document.body.classList.toggle("bass", on); dispatchEvent(new CustomEvent("bd-bass", { detail: on })); }
   b.addEventListener("click", () => {
     if (!au) { au = new Audio("audio/bass-15s.mp3"); au.preload = "auto"; window.__bdAudio = au; dispatchEvent(new CustomEvent("bd-audio", { detail: au })); au.addEventListener("ended", () => { au.currentTime = 0; set(false); }); au.addEventListener("error", () => set(false)); }
     if (!au.paused) { au.pause(); au.currentTime = 0; set(false); }
-    else au.play().then(() => set(true)).catch(err => { console.error("Hear the Bass:", err); set(false); });
+    else { set(true); au.play().catch(err => { console.error("Hear the Bass:", err); set(false); }); }
   });
 })();
 

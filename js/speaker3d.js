@@ -101,12 +101,17 @@
   if (window.__bdAudio) hook(window.__bdAudio);
   addEventListener("bd-audio", e => hook(e.detail));
 
-  let peak = .2, mx = 0, my = 0, ry = 0, rx = 0, lvl = 0, vis = true, tab = true;
+  let drive = false, t0 = 0, peak = .2, mx = 0, my = 0, ry = 0, rx = 0, lvl = 0, vis = true, tab = true;
   addEventListener("mousemove", e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
   document.addEventListener("visibilitychange", () => { tab = !document.hidden; });
   new IntersectionObserver(es => { vis = es[0].isIntersecting; }).observe(wrap);
 
   const clock = new T.Clock();
+  // "Hear the Bass" pressed: instant punch + a steady kick pattern, so the speaker always reacts
+  addEventListener("bd-bass", e => {
+    drive = !!e.detail;
+    if (drive) { t0 = clock.getElapsedTime(); lvl = 1; fire(0xff3b2f); }
+  });
   function frame() {
     requestAnimationFrame(frame);
     if (!vis || !tab) return;
@@ -118,6 +123,7 @@
       peak = Math.max(peak * .995, raw, .2);   // auto-gain so quiet devices still pulse hard
       target = Math.min(1, raw / peak);
     }
+    if (drive) { const kick = Math.exp(-(((t - t0) * 2.2) % 1) * 5.5); target = Math.max(target, .3 + .7 * kick); }
     lvl += (target - lvl) * .4;
     if (lvl > .55 && prev <= .55) fire(Math.random() < .5 ? 0xff3b2f : 0xffb020);
     prev = lvl;
