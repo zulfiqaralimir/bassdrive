@@ -5,7 +5,7 @@
   if (!old) return;
   let renderer;
   try { renderer = new T.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" }); } catch (e) { return; }
-  const S = 340, wrap = document.createElement("div");
+  const S = 400, wrap = document.createElement("div");
   wrap.className = "speaker3d"; wrap.setAttribute("aria-hidden", "true");
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.setSize(S, S);
@@ -70,6 +70,14 @@
 
   g.rotation.x = -.06;
 
+  // Shockwave rings fired on each bass hit
+  const waves = [0, 1, 2].map(() => {
+    const m = new T.Mesh(new T.TorusGeometry(1.1, .02, 8, 96), new T.MeshBasicMaterial({ color: 0xff5a2f, transparent: true, opacity: 0, depthWrite: false, blending: T.AdditiveBlending }));
+    m.userData.a = 1; g.add(m); return m;
+  });
+  let wi = 0, prev = 0;
+  function fire(c) { const w = waves[wi++ % 3]; w.userData.a = 0; w.material.color.setHex(c); }
+
   // Audio analyser (read-only tap): the <audio> element keeps playing natively, so sound can never be
   // muted by the Web Audio graph. If captureStream is unsupported (Safari) the speaker just breathes.
   let an, bins, ctx, src;
@@ -93,7 +101,7 @@
   if (window.__bdAudio) hook(window.__bdAudio);
   addEventListener("bd-audio", e => hook(e.detail));
 
-  let mx = 0, my = 0, ry = 0, rx = 0, lvl = 0, vis = true, tab = true;
+  let peak = .2, mx = 0, my = 0, ry = 0, rx = 0, lvl = 0, vis = true, tab = true;
   addEventListener("mousemove", e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
   document.addEventListener("visibilitychange", () => { tab = !document.hidden; });
   new IntersectionObserver(es => { vis = es[0].isIntersecting; }).observe(wrap);
@@ -103,21 +111,28 @@
     requestAnimationFrame(frame);
     if (!vis || !tab) return;
     const t = clock.getElapsedTime();
-    let target = .1 + .06 * Math.sin(t * 2.2);          // idle breathing
+    let target = .16 + .1 * Math.sin(t * 2.2);          // idle breathing
     if (an && src && window.__bdAudio && !window.__bdAudio.paused) {
       an.getByteFrequencyData(bins);
-      target = (bins[1] + bins[2] + bins[3] + bins[4]) / 4 / 255;
+      const raw = (bins[1] + bins[2] + bins[3] + bins[4] + bins[5]) / 5 / 255;
+      peak = Math.max(peak * .995, raw, .2);   // auto-gain so quiet devices still pulse hard
+      target = Math.min(1, raw / peak);
     }
-    lvl += (target - lvl) * .35;
-    cone.position.z = -.1 + lvl * .18;
-    dome.scale.setScalar(1 + lvl * .4);
-    redM.emissiveIntensity = .75 + lvl * 2;
-    amberM.emissiveIntensity = .5 + lvl * 1.2;
-    red.intensity = 2 + lvl * 4; amb.intensity = 1.6 + lvl * 3;
+    lvl += (target - lvl) * .4;
+    if (lvl > .55 && prev <= .55) fire(Math.random() < .5 ? 0xff3b2f : 0xffb020);
+    prev = lvl;
+    waves.forEach(w => { const u = w.userData; if (u.a < 1) { u.a = Math.min(1, u.a + .035); w.scale.setScalar(1 + u.a * .9); w.position.z = .2 + u.a * .6; w.material.opacity = (1 - u.a) * .8; } else w.material.opacity = 0; });
+    wrap.style.setProperty("--l", lvl.toFixed(3));
+    g.scale.setScalar(1 + lvl * .07);
+    cone.position.z = -.1 + lvl * .34;
+    dome.scale.setScalar(1 + lvl * .65);
+    redM.emissiveIntensity = .75 + lvl * 3.2;
+    amberM.emissiveIntensity = .7 + lvl * 2.4;
+    red.intensity = 2.4 + lvl * 7; amb.intensity = 2 + lvl * 5;
     const rtl = document.documentElement.dir === "rtl";
     const base = Math.sin(t * .45) * .6 * (rtl ? -1 : 1);
-    ry += (base + mx * .35 - ry) * .06;
-    rx += (my * .2 - rx) * .06;
+    ry += (base + mx * .5 - ry) * .07;
+    rx += (my * .3 - rx) * .07;
     g.rotation.set(rx - .06, ry, 0);
     renderer.render(scene, cam);
   }
