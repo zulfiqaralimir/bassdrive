@@ -300,6 +300,10 @@ select.lang{background:var(--bg)}
 .story{position:relative;overflow:hidden;isolation:isolate}
 .story .hero-bg img{object-position:50% 50%;transform-origin:50% 50%;animation-delay:0s}
 .story:not(.vis) .hero-bg img{animation-play-state:paused}
+#how{position:relative;overflow:hidden;isolation:isolate}
+#how .hero-bg img{object-position:50% 50%;transform-origin:50% 50%;animation-delay:0s}
+#how:not(.vis) .hero-bg img{animation-play-state:paused}
+.cimg{display:block;width:calc(100% + 48px);max-width:none;height:auto;aspect-ratio:3/2;object-fit:cover;margin:-24px -24px 16px;border-radius:14px 14px 0 0}
 .hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:65% 50%;transform-origin:65% 50%;animation:kb 30s ease-in-out 1s infinite alternate}
 .hero-shade{position:absolute;inset:0;z-index:-1;background:rgba(11,11,13,.7)}
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.12)}}
@@ -398,7 +402,7 @@ select.lang{background:var(--bg)}
   <div class="wrap">
     <div class="head"><h2>What we fix & install</h2><p>From a dead stereo to a full sound upgrade.</p></div>
     <div class="grid">
-      <div class="card"><div class="ico">📻</div><h3>Tape & Head Units</h3><p>Not powering on, no sound, stuck screens, Bluetooth and Android panel issues.</p></div>
+      <div class="card"><img class="cimg" src="images/bluetooth-screen-card.webp" alt="" width="640" height="426" loading="lazy" decoding="async"><div class="ico">📻</div><h3>Tape & Head Units</h3><p>Not powering on, no sound, stuck screens, Bluetooth and Android panel issues.</p></div>
       <div class="card"><div class="ico">🔊</div><h3>Sound Systems</h3><p>Speakers, woofers, amplifiers, tuning and complete audio upgrades.</p></div>
       <div class="card"><div class="ico">🔌</div><h3>Wiring & Electrical</h3><p>Short circuits, fuse problems, battery drain and hidden wiring faults.</p></div>
       <div class="card"><div class="ico">📷</div><h3>Cameras & Sensors</h3><p>Reverse cameras, parking sensors, dash cams and installation.</p></div>
@@ -475,6 +479,13 @@ select.lang{background:var(--bg)}
 </section>
 
 <section id="how">
+  <div class="hero-bg" aria-hidden="true">
+    <picture>
+      <source media="(max-width:700px)" srcset="images/dashboard-jeep-sm.webp">
+      <img src="images/dashboard-jeep.webp" alt="" width="1600" height="1068" loading="lazy" decoding="async">
+    </picture>
+  </div>
+  <div class="hero-shade" aria-hidden="true"></div>
   <div class="wrap">
     <div class="head"><h2>How it works</h2></div>
     <div class="grid">
@@ -1081,9 +1092,9 @@ function cityOK(p) { const c = getCity(); return c === "All" || !p.cities || !p.
 
 // Story background zoom only runs while the section is on screen
 (function () {
-  const s = document.querySelector(".story");
-  if (!s || !("IntersectionObserver" in window)) return;
-  new IntersectionObserver(es => s.classList.toggle("vis", es[0].isIntersecting)).observe(s);
+  if (!("IntersectionObserver" in window)) return;
+  document.querySelectorAll(".story,#how").forEach(s =>
+    new IntersectionObserver(es => s.classList.toggle("vis", es[0].isIntersecting)).observe(s));
 })();
 
 // First-visit loader: logo beat, gone in under a second
