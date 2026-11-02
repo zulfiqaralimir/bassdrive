@@ -65,7 +65,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .eq{display:flex;gap:5px;align-items:flex-end;height:50px;margin-top:50px}
 .eq i{width:8px;background:linear-gradient(var(--accent2),var(--accent));border-radius:3px;animation:b 1s ease-in-out infinite alternate}
 @keyframes b{from{height:10%}to{height:100%}}
-@media(prefers-reduced-motion:reduce){.eq i{animation:none;height:60%}}
+html.nofx .eq i{animation:none;height:60%}
 
 /* Sections */
 section{padding:70px 0;border-top:1px solid var(--line)}
@@ -190,7 +190,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .pcard .btn{text-align:center;width:100%}
 .btn.off{opacity:.45;pointer-events:none}
 .pmsg{color:var(--muted);grid-column:1/-1;text-align:center;padding:30px 0}
-@media(prefers-reduced-motion:reduce){.pimg img{transition:none}.pcard:hover .pimg img{transform:none}}
+html.nofx .pimg img{transition:none}html.nofx .pcard:hover .pimg img{transform:none}
 
 .logo{display:inline-flex;align-items:center}
 .logo .mark{flex:none;margin-right:8px}
@@ -213,7 +213,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .boot #boot span{color:var(--accent);display:inline-block;animation:beat .8s ease-in-out infinite}
 .boot #boot.hide{opacity:0;pointer-events:none}
 @keyframes bootout{to{opacity:0;visibility:hidden;pointer-events:none}}
-@media(prefers-reduced-motion:reduce){.skel .pimg,.skel i{animation:none}#boot{display:none!important}}
+html.nofx .skel .pimg,html.nofx .skel i{animation:none}html.nofx #boot{display:none!important}
 
 [hidden]{display:none!important}
 
@@ -292,7 +292,7 @@ select.lang{background:var(--bg)}
 .res .btn,.tool>.btn{margin-top:10px;width:100%;text-align:center}
 .pop{animation:pop .45s ease both}
 @keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.pop{animation:none}.opt:hover{transform:none}}
+html.nofx .pop{animation:none}html.nofx .opt:hover{transform:none}
 
 /* Hero photo background */
 .hero{isolation:isolate}
@@ -307,24 +307,17 @@ select.lang{background:var(--bg)}
 .hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:65% 50%;transform-origin:65% 50%;animation:kb 30s ease-in-out 1s infinite alternate}
 .hero-shade{position:absolute;inset:0;z-index:-1;background:rgba(11,11,13,.7)}
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.12)}}
-@media(prefers-reduced-motion:reduce){.hero-bg img{animation:none}}
+html.nofx .hero-bg img{animation:none}
 
 /* Logo beat */
 .logo span{display:inline-block;animation:beat 1.6s ease-in-out infinite}
 @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}24%{transform:scale(1)}36%{transform:scale(1.08)}48%{transform:scale(1)}}
 
-@media(prefers-reduced-motion:reduce){
-  .waves svg,.btn-red::after,.logo span,.tw-typed.caret::after{animation:none}
-  .btn-red::after{display:none}
-  .card,.card:hover{transform:none}
-  .js .reveal{opacity:1;translate:none;transition:none}
-  .speaker .ring,.speaker .cone,.speaker .dome{animation:none}
-  .speaker .ring:nth-of-type(1){opacity:.4;transform:scale(.9)}
-  .track{transition:none}
-}
+html.nofx .waves svg,html.nofx .btn-red::after,html.nofx .logo span,html.nofx .tw-typed.caret::after{animation:none}html.nofx .btn-red::after{display:none}html.nofx .card,html.nofx .card:hover{transform:none}html.nofx.js .reveal{opacity:1;translate:none;transition:none}html.nofx .speaker .ring,html.nofx .speaker .cone,html.nofx .speaker .dome{animation:none}html.nofx .speaker .ring:nth-of-type(1){opacity:.4;transform:scale(.9)}html.nofx .track{transition:none}
+
 </style>
 <script>try{var L=new URLSearchParams(location.search).get("lang")||localStorage.getItem("bd_lang");if(L==="ur"){document.documentElement.lang="ur";document.documentElement.dir="rtl";var k=document.createElement("link");k.rel="stylesheet";k.id="urfont";k.href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap";document.head.appendChild(k)}}catch(e){}</script>
-<script>document.documentElement.classList.add("js");try{if(!localStorage.getItem("bd_seen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("boot")}catch(e){}</script>
+<script>document.documentElement.classList.add("js");try{if(!localStorage.getItem("bd_seen")&&new URLSearchParams(location.search).get("motion")!=="off")document.documentElement.classList.add("boot")}catch(e){}try{if(new URLSearchParams(location.search).get("motion")==="off")document.documentElement.classList.add("nofx")}catch(e){}</script>
 </head>
 <body>
 <div id="boot" aria-hidden="true">Bass<span>Drive</span></div>
@@ -593,7 +586,7 @@ function send(form, title) {
   });
 }
 /* ---- Animations ---- */
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduce = document.documentElement.classList.contains("nofx");
 
 // Scroll reveal
 document.querySelectorAll(".head,.card,.story .box,form").forEach((el, i) => {

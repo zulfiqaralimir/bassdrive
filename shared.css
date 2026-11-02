@@ -79,4 +79,4 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 footer a:hover{color:var(--accent2)}
 @media(max-width:520px){.logo{font-size:19px}.links{gap:12px;font-size:13px}}
-@media(prefers-reduced-motion:reduce){.up{animation:none}.card:hover{transform:none}}
+html.nofx .up{animation:none}html.nofx .card:hover{transform:none}
