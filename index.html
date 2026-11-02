@@ -67,6 +67,19 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 @keyframes b{from{height:10%}to{height:100%}}
 html.nofx .eq i{animation:none;height:60%}
 
+/* Hear the Bass */
+.hear{display:inline-flex;align-items:center;gap:10px;font-family:inherit;color:var(--text)}
+.hq{display:inline-flex;align-items:flex-end;gap:2px;height:16px;width:0;overflow:hidden;transition:width .2s}
+.hq i{width:3px;height:30%;background:var(--accent2);border-radius:2px}
+.hear.on{border-color:var(--accent2);color:var(--accent2)}
+.hear.on .hq{width:18px}
+.hear.on .hq i{animation:hq .5s ease-in-out infinite alternate}
+.hear.on .hq i:nth-child(2){animation-delay:-.2s}.hear.on .hq i:nth-child(3){animation-delay:-.35s}.hear.on .hq i:nth-child(4){animation-delay:-.1s}
+@keyframes hq{from{height:20%}to{height:100%}}
+.hear .h-off,.hear.on .h-on{display:none}.hear.on .h-off{display:inline}
+body.bass .eq i{animation-duration:.35s}
+html.nofx .hear.on .hq i{animation:none;height:70%}
+
 /* Sections */
 section{padding:70px 0;border-top:1px solid var(--line)}
 .head{margin-bottom:36px}
@@ -359,6 +372,7 @@ html.nofx .waves svg,html.nofx .btn-red::after,html.nofx .logo span,html.nofx .t
     <div class="cta">
       <a href="#book" class="btn btn-red">Get it Fixed</a>
       <a href="#book" class="btn btn-ghost">I'm a Technician</a>
+      <button type="button" class="btn btn-ghost hear" id="hearBtn" aria-pressed="false"><span class="hq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="h-on">🎧 Hear the Bass</span><span class="h-off">Stop</span></button>
     </div>
     <div class="eq" aria-hidden="true" id="eq"></div>
     <div class="speaker" aria-hidden="true">
@@ -840,7 +854,7 @@ const UR = {
   "Dealer couldn't fix it?": "ڈیلر ٹھیک نہیں کر سکا؟", "Our experts can.": "ہمارے ماہرین کر سکتے ہیں۔",
   "BassDrive connects you with skilled, verified technicians for car tape/head units, sound systems, wiring and electrical faults — fast, fair and done right.":
     "BassDrive آپ کو کار کے ٹیپ/ہیڈ یونٹس، ساؤنڈ سسٹمز، وائرنگ اور برقی خرابیوں کے لیے ہنر مند اور تصدیق شدہ ٹیکنیشنز سے ملاتا ہے — تیز، مناسب دام اور بہترین کام۔",
-  "Get it Fixed": "ٹھیک کروائیں", "I'm a Technician": "میں ٹیکنیشن ہوں",
+  "Get it Fixed": "ٹھیک کروائیں", "🎧 Hear the Bass": "🎧 بیس سنیں", "Stop": "بند کریں", "I'm a Technician": "میں ٹیکنیشن ہوں",
   "Pay After Fix": "کام کے بعد ادائیگی", "Pay only when it works": "ادائیگی صرف تب جب کام چل جائے",
   "Verified Experts": "تصدیق شدہ ماہرین", "Skill-checked technicians": "ہنر کی جانچ شدہ ٹیکنیشنز",
   "Work Warranty": "کام کی وارنٹی", "Guarantee on every job": "ہر کام پر گارنٹی",
@@ -1116,6 +1130,19 @@ function cityOK(p) { const c = getCity(); return c === "All" || !p.cities || !p.
   });
   document.addEventListener("click", e => {
     if (on && e.target.closest("button:not(#sndBtn),.btn")) thump();
+  });
+})();
+
+// Hear the Bass: tap to play/stop a 15s clip (no autoplay, loaded on first tap)
+(function () {
+  const b = document.getElementById("hearBtn");
+  if (!b) return;
+  let au;
+  function set(on) { b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); document.body.classList.toggle("bass", on); }
+  b.addEventListener("click", () => {
+    if (!au) { au = new Audio("audio/bass-15s.mp3"); au.preload = "auto"; au.addEventListener("ended", () => { au.currentTime = 0; set(false); }); au.addEventListener("error", () => set(false)); }
+    if (!au.paused) { au.pause(); au.currentTime = 0; set(false); }
+    else au.play().then(() => set(true)).catch(() => set(false));
   });
 })();
 
