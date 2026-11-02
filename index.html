@@ -1151,7 +1151,7 @@ function cityOK(p) { const c = getCity(); return c === "All" || !p.cities || !p.
   b.addEventListener("click", () => {
     if (!au) { au = new Audio("audio/bass-15s.mp3"); au.preload = "auto"; window.__bdAudio = au; dispatchEvent(new CustomEvent("bd-audio", { detail: au })); au.addEventListener("ended", () => { au.currentTime = 0; set(false); }); au.addEventListener("error", () => set(false)); }
     if (!au.paused) { au.pause(); au.currentTime = 0; set(false); }
-    else au.play().then(() => set(true)).catch(() => set(false));
+    else au.play().then(() => set(true)).catch(err => { console.error("Hear the Bass:", err); set(false); });
   });
 })();
 

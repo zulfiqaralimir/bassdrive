@@ -34,19 +34,24 @@
   const ring = new T.Mesh(new T.TorusGeometry(.6, .04, 12, 96), redM); ring.position.z = -.25; cone.add(ring);
   const dome = new T.Mesh(new T.SphereGeometry(.24, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), redM); dome.rotation.x = Math.PI / 2; dome.position.z = -.4; cone.add(dome);
 
-  // Audio analyser attaches to the "Hear the Bass" element once the user has played it.
-  let an, bins, ctx;
+  // Audio analyser (read-only tap): the <audio> element keeps playing natively, so sound can never be
+  // muted by the Web Audio graph. If captureStream is unsupported (Safari) the speaker just breathes.
+  let an, bins, ctx, src;
   function hook(au) {
     if (an || !au) return;
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
       ctx = new AC();
-      const src = ctx.createMediaElementSource(au);
       an = ctx.createAnalyser(); an.fftSize = 1024; an.smoothingTimeConstant = .6;
-      src.connect(an); an.connect(ctx.destination);
       bins = new Uint8Array(an.frequencyBinCount);
-      au.addEventListener("play", () => ctx.resume());
-      ctx.resume();
+      const cap = au.captureStream || au.mozCaptureStream;
+      const attach = () => {
+        if (ctx.state === "suspended") ctx.resume();
+        if (src || !cap) return;
+        try { const st = cap.call(au); if (st.getAudioTracks().length) { src = ctx.createMediaStreamSource(st); src.connect(an); } } catch (e) {}
+      };
+      au.addEventListener("playing", attach);
+      if (!au.paused) attach();
     } catch (e) { an = null; }
   }
   if (window.__bdAudio) hook(window.__bdAudio);
@@ -63,7 +68,7 @@
     if (!vis || !tab) return;
     const t = clock.getElapsedTime();
     let target = .1 + .06 * Math.sin(t * 2.2);          // idle breathing
-    if (an && window.__bdAudio && !window.__bdAudio.paused) {
+    if (an && src && window.__bdAudio && !window.__bdAudio.paused) {
       an.getByteFrequencyData(bins);
       target = (bins[1] + bins[2] + bins[3] + bins[4]) / 4 / 255;
     }
