@@ -12,27 +12,63 @@
   wrap.appendChild(renderer.domElement);
   old.parentNode.insertBefore(wrap, old);
 
-  const scene = new T.Scene(), cam = new T.PerspectiveCamera(35, 1, .1, 50);
-  cam.position.z = 6.4;
-  scene.add(new T.AmbientLight(0x7a7a96, 1.4));
-  const red = new T.PointLight(0xff3b2f, 2.2, 14); red.position.set(-1.5, 1.2, 3.8); scene.add(red);
-  const amb = new T.PointLight(0xffb020, 1.8, 14); amb.position.set(1.8, -1, 3.8); scene.add(amb);
+  const scene = new T.Scene(), cam = new T.PerspectiveCamera(30, 1, .1, 50);
+  cam.position.set(0, 0, 7.6);
+  renderer.outputEncoding = T.sRGBEncoding;
+  renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = .95;
+
+  // Studio-style reflections: a tiny emissive "room" baked once into an environment map (gives real metal/gloss).
+  (function () {
+    const env = new T.Scene(), add = (w, h, x, y, z, r, gg, bb) => {
+      const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ side: T.DoubleSide }));
+      m.material.color.setRGB(r, gg, bb); m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
+    };
+    env.add(new T.Mesh(new T.BoxGeometry(30, 30, 30), new T.MeshBasicMaterial({ color: 0x08080b, side: T.BackSide })));
+    add(14, 3, 0, 9, 6, 4, 4, 4.2);       // soft top box
+    add(3, 12, -9, 1, 4, 3.6, .5, .35);   // red strip, left
+    add(3, 12, 9, -1, 4, 3.4, 2.1, .3);   // amber strip, right
+    add(10, 2, 0, -8, 5, 1, .8, .7);      // warm floor bounce
+    const pm = new T.PMREMGenerator(renderer);
+    scene.environment = pm.fromScene(env, .03).texture;
+    pm.dispose();
+  })();
+
+  scene.add(new T.AmbientLight(0x6a6a82, .35));
+  const key = new T.DirectionalLight(0xfff1e0, 1.4); key.position.set(-3, 4, 5); scene.add(key);
+  const red = new T.PointLight(0xff3b2f, 2, 12); red.position.set(-2.6, .4, 2.2); scene.add(red);
+  const amb = new T.PointLight(0xffb020, 1.6, 12); amb.position.set(2.8, -1, 2.4); scene.add(amb);
 
   const g = new T.Group(); scene.add(g);
-  const dark = new T.MeshStandardMaterial({ color: 0x141418, metalness: .6, roughness: .45 });
-  const dark2 = new T.MeshStandardMaterial({ color: 0x3a3a46, metalness: .35, roughness: .38, side: T.DoubleSide });
-  const amberM = new T.MeshStandardMaterial({ color: 0x3a2a08, emissive: 0xffb020, emissiveIntensity: .6, metalness: .3, roughness: .4 });
-  const redM = new T.MeshStandardMaterial({ color: 0x3a0f0c, emissive: 0xff3b2f, emissiveIntensity: .6, metalness: .3, roughness: .4 });
+  const L = (pts, mat, segs) => new T.Mesh(new T.LatheGeometry(pts.map(p => new T.Vector2(p[0], p[1])), segs || 96), mat);
+  const gloss = new T.MeshStandardMaterial({ color: 0x15151a, metalness: .85, roughness: .28, envMapIntensity: 1.2, side: T.DoubleSide });
+  const rubber = new T.MeshStandardMaterial({ color: 0x0e0e11, metalness: .1, roughness: .75 });
+  const paper = new T.MeshStandardMaterial({ color: 0x17171c, metalness: .25, roughness: .7, envMapIntensity: .45, side: T.DoubleSide });
+  const steel = new T.MeshStandardMaterial({ color: 0x9a9aa6, metalness: 1, roughness: .3 });
+  const amberM = new T.MeshStandardMaterial({ color: 0x2a1c05, emissive: 0xffb020, emissiveIntensity: .7, metalness: .5, roughness: .35 });
+  const redM = new T.MeshStandardMaterial({ color: 0x7a160f, emissive: 0xff3b2f, emissiveIntensity: .75, metalness: .4, roughness: .35, envMapIntensity: .9 });
 
-  const baffle = new T.Mesh(new T.CylinderGeometry(1.25, 1.25, .25, 72), dark); baffle.rotation.x = Math.PI / 2; g.add(baffle);
-  const rim = new T.Mesh(new T.TorusGeometry(1.2, .06, 16, 96), amberM); rim.position.z = .13; g.add(rim);
-  const surround = new T.Mesh(new T.TorusGeometry(.95, .09, 16, 96), dark2); surround.position.z = .13; g.add(surround);
+  // Deep chamfered cabinet with a recessed cavity (this is what gives the real sense of depth)
+  const body = L([[0, -.95], [1.2, -.95], [1.38, -.8], [1.44, -.6], [1.44, .02], [1.38, .14], [1.22, .17], [1.1, .1], [1.04, -.05], [1.04, -.55], [0, -.55]], gloss);
+  body.rotation.x = Math.PI / 2; g.add(body);
+  const lip = new T.Mesh(new T.TorusGeometry(1.14, .028, 16, 120), amberM); lip.position.z = .15; g.add(lip);
+  for (let i = 0; i < 8; i++) {
+    const a = i / 8 * Math.PI * 2 + Math.PI / 8, bolt = new T.Mesh(new T.CylinderGeometry(.05, .05, .04, 16), steel);
+    bolt.rotation.x = Math.PI / 2; bolt.position.set(Math.cos(a) * 1.31, Math.sin(a) * 1.31, .17); g.add(bolt);
+  }
+  const surround = new T.Mesh(new T.TorusGeometry(.98, .075, 20, 120), rubber); surround.scale.z = .55; surround.position.z = -.12; g.add(surround);
 
-  const cone = new T.Group(); cone.position.z = .1; g.add(cone);
-  const pts = [[.9, .02], [.8, -.1], [.6, -.27], [.4, -.38], [.22, -.42]].map(p => new T.Vector2(p[0], p[1]));
-  const lathe = new T.Mesh(new T.LatheGeometry(pts, 64), dark2); lathe.rotation.x = Math.PI / 2; cone.add(lathe);
-  const ring = new T.Mesh(new T.TorusGeometry(.6, .04, 12, 96), redM); ring.position.z = -.25; cone.add(ring);
-  const dome = new T.Mesh(new T.SphereGeometry(.24, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), redM); dome.rotation.x = Math.PI / 2; dome.position.z = -.4; cone.add(dome);
+  // Concave cone with ribs, voice-coil dust cap, all inside one group so the whole thing pumps with the bass
+  const cone = new T.Group(); cone.position.z = -.1; g.add(cone);
+  const cp = [], depth = .75;
+  for (let i = 0; i <= 14; i++) { const u = i / 14, r = .92 - u * .7; cp.push([r, -depth * Math.pow(u, 1.5)]); }
+  const lathe = L(cp, paper, 96); lathe.rotation.x = Math.PI / 2; cone.add(lathe);
+  const yAt = r => -depth * Math.pow((.92 - r) / .7, 1.5);
+  [.8, .66, .52, .38].forEach(r => { const t = new T.Mesh(new T.TorusGeometry(r, .012, 8, 96), rubber); t.position.z = yAt(r) + .005; cone.add(t); });
+  const ring = new T.Mesh(new T.TorusGeometry(.6, .03, 12, 96), redM); ring.position.z = yAt(.6) + .01; cone.add(ring);
+  const dome = new T.Mesh(new T.SphereGeometry(.24, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2), redM);
+  dome.rotation.x = Math.PI / 2; dome.scale.set(1, 1, .9); dome.position.z = -depth - .02; cone.add(dome);
+
+  g.rotation.x = -.06;
 
   // Audio analyser (read-only tap): the <audio> element keeps playing natively, so sound can never be
   // muted by the Web Audio graph. If captureStream is unsupported (Safari) the speaker just breathes.
@@ -73,16 +109,16 @@
       target = (bins[1] + bins[2] + bins[3] + bins[4]) / 4 / 255;
     }
     lvl += (target - lvl) * .35;
-    cone.position.z = .1 + lvl * .16;
+    cone.position.z = -.1 + lvl * .18;
     dome.scale.setScalar(1 + lvl * .4);
-    redM.emissiveIntensity = .5 + lvl * 2;
+    redM.emissiveIntensity = .75 + lvl * 2;
     amberM.emissiveIntensity = .5 + lvl * 1.2;
-    red.intensity = 2 + lvl * 3; amb.intensity = 1.6 + lvl * 2.2;
+    red.intensity = 2 + lvl * 4; amb.intensity = 1.6 + lvl * 3;
     const rtl = document.documentElement.dir === "rtl";
-    const base = Math.sin(t * .4) * .5 * (rtl ? -1 : 1);
+    const base = Math.sin(t * .45) * .6 * (rtl ? -1 : 1);
     ry += (base + mx * .35 - ry) * .06;
     rx += (my * .2 - rx) * .06;
-    g.rotation.set(rx, ry, 0);
+    g.rotation.set(rx - .06, ry, 0);
     renderer.render(scene, cam);
   }
   frame();
