@@ -12,3 +12,6 @@ Thumbs.db
 # large original hero photo (webp versions are used)
 images/hero-dashboard/
 audio/bass-demo.mp3
+
+# original 3D car (too large)
+models/car-original.glb

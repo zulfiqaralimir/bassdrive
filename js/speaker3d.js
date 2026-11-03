@@ -94,7 +94,9 @@
         if (src || !cap) return;
         try { const st = cap.call(au); if (st.getAudioTracks().length) { src = ctx.createMediaStreamSource(st); src.connect(an); } } catch (e) {}
       };
+      // tracks may not exist yet on the first play, so retry until the tap succeeds
       au.addEventListener("playing", attach);
+      au.addEventListener("timeupdate", attach);
       if (!au.paused) attach();
     } catch (e) { an = null; }
   }
