@@ -75,5 +75,104 @@
       "Wah Cantt",
       "Lahore"
     ]
+  },
+  {
+    "id": "hu-002",
+    "name": "Multimedia MP3 Player",
+    "brand": "Sample Brand",
+    "category": "Head Units",
+    "price": 6500,
+    "specs": "USB, SD, Bluetooth, FM radio",
+    "image": "images/products/multimedia.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "hu-003",
+    "name": "Android Panel",
+    "brand": "Sample Brand",
+    "category": "Head Units",
+    "price": 24500,
+    "specs": "Android OS, touchscreen, GPS, WiFi, camera input",
+    "image": "images/products/android-panel.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "cm-002",
+    "name": "Front & Back Camera Set",
+    "brand": "Sample Brand",
+    "category": "Cameras",
+    "price": 5500,
+    "specs": "Dual camera, 170 degree view, night vision",
+    "image": "images/products/front-camera.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "sp-002",
+    "name": "3-inch Speakers (Pair)",
+    "brand": "Sample Brand",
+    "category": "Speakers",
+    "price": 2500,
+    "specs": "Compact, 100W peak, 4 ohm",
+    "image": "images/products/speaker.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "sp-003",
+    "name": "6-inch Speakers (Pair)",
+    "brand": "Sample Brand",
+    "category": "Speakers",
+    "price": 5500,
+    "specs": "250W peak, 4 ohm, coaxial",
+    "image": "images/products/speaker.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "sp-004",
+    "name": "9-inch Speakers (Pair)",
+    "brand": "Sample Brand",
+    "category": "Speakers",
+    "price": 9500,
+    "specs": "400W peak, 4 ohm, heavy magnet",
+    "image": "images/products/speaker.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "sp-005",
+    "name": "Door Speakers (Pair)",
+    "brand": "Sample Brand",
+    "category": "Speakers",
+    "price": 6500,
+    "specs": "Direct-fit, 300W peak, 4 ohm",
+    "image": "images/products/door-speaker.webp",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "wf-002",
+    "name": "11-inch Woofer",
+    "brand": "Sample Brand",
+    "category": "Woofers",
+    "price": 12000,
+    "specs": "800W peak, 4 ohm, dual voice coil",
+    "image": "images/products/speaker-icon.svg",
+    "inStock": true,
+    "cities": []
+  },
+  {
+    "id": "am-002",
+    "name": "Mono Amplifier for 11-inch Woofer",
+    "brand": "Sample Brand",
+    "category": "Amps",
+    "price": 13500,
+    "specs": "1000W peak, Class D, bass boost",
+    "image": "images/products/speaker-icon.svg",
+    "inStock": true,
+    "cities": []
   }
 ]
