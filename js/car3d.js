@@ -47,10 +47,10 @@
       document.querySelector(".hero").classList.add("hascar");
       requestAnimationFrame(() => wrap.classList.add("ready"));
 
-      let drag = false, lx = 0, vy = 0, vis = true, tab = true;
+      let drag = false, lx = 0, ly = 0, vy = 0, vis = true, tab = true;
       const el = renderer.domElement;
-      el.addEventListener("pointerdown", e => { drag = true; lx = e.clientX; el.setPointerCapture(e.pointerId); });
-      el.addEventListener("pointermove", e => { if (!drag) return; const d = e.clientX - lx; lx = e.clientX; g.rotation.y += d * .01; vy = d * .01; });
+      el.addEventListener("pointerdown", e => { drag = true; lx = e.clientX; ly = e.clientY; el.setPointerCapture(e.pointerId); });
+      el.addEventListener("pointermove", e => { if (!drag) return; const d = e.clientX - lx; lx = e.clientX; g.rotation.y += d * .01; vy = d * .01; g.rotation.x = Math.max(-.5, Math.min(.8, g.rotation.x + (e.clientY - ly) * .008)); ly = e.clientY; });
       const up = () => { drag = false; };
       el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
       document.addEventListener("visibilitychange", () => { tab = !document.hidden; });
@@ -59,7 +59,7 @@
       (function frame() {
         requestAnimationFrame(frame);
         if (!vis || !tab) return;
-        if (!drag) { vy *= .95; g.rotation.y += vy + (reduce ? 0 : .0035); }
+        if (!drag) { g.rotation.x *= .96; vy *= .95; g.rotation.y += vy + (reduce ? 0 : .0035); }
         renderer.render(scene, cam);
       })();
     }, undefined, () => {});
