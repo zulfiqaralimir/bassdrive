@@ -68,7 +68,7 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 html.nofx .eq i{animation:none;height:60%}
 
 /* 3D hero speaker (desktop only, injected by JS) */
-.car3d{position:absolute;right:10px;bottom:0;width:420px;height:224px;opacity:0;transition:opacity .8s;cursor:grab;touch-action:pan-y}.car3d.ready{opacity:1}.car3d:active{cursor:grabbing}.car3d canvas{display:block;width:100%;height:100%}[dir=rtl] .car3d{right:auto;left:20px}@media(max-width:1000px){.car3d{display:none}}
+.car3d{position:absolute;right:50px;bottom:0;width:420px;height:224px;opacity:0;transition:opacity .8s;cursor:grab;touch-action:pan-y}.car3d.ready{opacity:1}.car3d:active{cursor:grabbing}.car3d canvas{display:block;width:100%;height:100%}[dir=rtl] .car3d{right:auto;left:20px}@media(max-width:1000px){.car3d{display:none}}
 .speaker3d{--l:0;position:absolute;right:60px;top:0;width:290px;height:290px;margin-top:0;pointer-events:none;opacity:0;transition:opacity .8s}
 .speaker3d.ready{opacity:1}
 .speaker3d::before{content:"";position:absolute;inset:-18%;background:radial-gradient(circle,rgba(255,59,47,.42),rgba(255,176,32,.16) 45%,transparent 70%);opacity:calc(.65 + var(--l)*.6);transform:scale(calc(.92 + var(--l)*.3))}
