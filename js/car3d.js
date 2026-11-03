@@ -52,15 +52,17 @@
       const mixer = clip ? new T.AnimationMixer(car) : null, clock = new T.Clock();
       let act = null, open = false;
       if (mixer) { act = mixer.clipAction(clip); act.setLoop(T.LoopOnce); act.clampWhenFinished = true; wrap.style.cursor = "pointer"; wrap.title = "Click to open/close doors"; }
-      const toggle = () => {
-        if (!act) return;
-        open = !open;
+      const setOpen = v => {
+        if (!act || open === v) return;
+        open = v;
         act.paused = false; act.enabled = true;
         act.timeScale = open ? 1 : -1;
         if (open && act.time >= clip.duration) act.time = 0;
         if (!open && act.time <= 0) act.time = clip.duration;
         act.play();
       };
+      const toggle = () => setOpen(!open);
+      addEventListener("bd-bass", e => setOpen(!!e.detail)); // "Hear the Bass" opens/closes doors
       let drag = false, lx = 0, ly = 0, vy = 0, vis = true, tab = true, sx = 0, sy = 0;
       const el = renderer.domElement;
       el.addEventListener("pointerdown", e => { drag = true; lx = sx = e.clientX; ly = sy = e.clientY; el.setPointerCapture(e.pointerId); });
