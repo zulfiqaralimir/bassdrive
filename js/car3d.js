@@ -47,17 +47,34 @@
       document.querySelector(".hero").classList.add("hascar");
       requestAnimationFrame(() => wrap.classList.add("ready"));
 
-      let drag = false, lx = 0, ly = 0, vy = 0, vis = true, tab = true;
+      // Click/tap (without dragging) toggles "Open all doors" animation
+      const clip = (gltf.animations || []).find(a => a.name === "Open all doors");
+      const mixer = clip ? new T.AnimationMixer(car) : null, clock = new T.Clock();
+      let act = null, open = false;
+      if (mixer) { act = mixer.clipAction(clip); act.setLoop(T.LoopOnce); act.clampWhenFinished = true; wrap.style.cursor = "pointer"; wrap.title = "Click to open/close doors"; }
+      const toggle = () => {
+        if (!act) return;
+        open = !open;
+        act.paused = false; act.enabled = true;
+        act.timeScale = open ? 1 : -1;
+        if (open && act.time >= clip.duration) act.time = 0;
+        if (!open && act.time <= 0) act.time = clip.duration;
+        act.play();
+      };
+      let drag = false, lx = 0, ly = 0, vy = 0, vis = true, tab = true, sx = 0, sy = 0;
       const el = renderer.domElement;
-      el.addEventListener("pointerdown", e => { drag = true; lx = e.clientX; ly = e.clientY; el.setPointerCapture(e.pointerId); });
+      el.addEventListener("pointerdown", e => { drag = true; lx = sx = e.clientX; ly = sy = e.clientY; el.setPointerCapture(e.pointerId); });
       el.addEventListener("pointermove", e => { if (!drag) return; const d = e.clientX - lx; lx = e.clientX; g.rotation.y += d * .01; vy = d * .01; g.rotation.x = Math.max(-.5, Math.min(.8, g.rotation.x + (e.clientY - ly) * .008)); ly = e.clientY; });
       const up = () => { drag = false; };
+      el.addEventListener("pointerup", e => { if (Math.hypot(e.clientX - sx, e.clientY - sy) < 5) toggle(); });
       el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
       document.addEventListener("visibilitychange", () => { tab = !document.hidden; });
       new IntersectionObserver(es => { vis = es[0].isIntersecting; }).observe(wrap);
       const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
       (function frame() {
         requestAnimationFrame(frame);
+        const dt = clock.getDelta();
+        if (mixer) mixer.update(dt);
         if (!vis || !tab) return;
         if (!drag) { g.rotation.x *= .96; vy *= .95; g.rotation.y += vy + (reduce ? 0 : .0035); }
         renderer.render(scene, cam);
