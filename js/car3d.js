@@ -62,7 +62,25 @@
         act.play();
       };
       const toggle = () => setOpen(!open);
-      addEventListener("bd-bass", e => setOpen(!!e.detail)); // "Hear the Bass" opens/closes doors
+
+      // Lights: headlights (clear glass) glow warm white, taillights (red glass) glow red while bass plays
+      const glow = [];
+      car.traverse(o => {
+        if (!o.isMesh) return;
+        const n = o.name || "";
+        let col = 0, max = 0;
+        if (/^Ext Lights#Glass Clear/.test(n)) { col = 0xfff2d0; max = 1.6; }
+        else if (/^Ext Taillight(#Glass Red| Trunk#Red Glass)/.test(n) || /^Ext Trunk Lid#Glass Red/.test(n)) { col = 0xff1a10; max = 2.2; }
+        if (!col) return;
+        o.material = o.material.clone();
+        if (!o.material.emissive) return;
+        o.material.emissive.setHex(col); o.material.emissiveIntensity = 0;
+        glow.push({ m: o.material, max });
+      });
+      let lvl = 0, lt = 0;
+      const lights = v => { lt = v ? 1 : 0; };
+
+      addEventListener("bd-bass", e => { setOpen(!!e.detail); lights(!!e.detail); }); // "Hear the Bass": doors + lights
       let drag = false, lx = 0, ly = 0, vy = 0, vis = true, tab = true, sx = 0, sy = 0;
       const el = renderer.domElement;
       el.addEventListener("pointerdown", e => { drag = true; lx = sx = e.clientX; ly = sy = e.clientY; el.setPointerCapture(e.pointerId); });
@@ -77,6 +95,7 @@
         requestAnimationFrame(frame);
         const dt = clock.getDelta();
         if (mixer) mixer.update(dt);
+        if (glow.length && lvl !== lt) { lvl += Math.sign(lt - lvl) * Math.min(Math.abs(lt - lvl), dt * 3); glow.forEach(g => { g.m.emissiveIntensity = lvl * g.max; }); }
         if (!vis || !tab) return;
         if (!drag) { g.rotation.x *= .96; vy *= .95; g.rotation.y += vy + (reduce ? 0 : .0035); }
         renderer.render(scene, cam);
