@@ -68,14 +68,15 @@
       car.traverse(o => {
         if (!o.isMesh) return;
         const n = o.name || "";
-        let col = 0, max = 0;
-        if (/^Ext Lights#Glass Clear/.test(n)) { col = 0xfff2d0; max = 1.6; }
-        else if (/^Ext Taillight(#Glass Red| Trunk#Red Glass)/.test(n) || /^Ext Trunk Lid#Glass Red/.test(n)) { col = 0xff1a10; max = 2.2; }
+        let col = 0, max = 0, to = 1;
+        if (/^Ext Lights#Glass Clear/.test(n)) { col = 0xfff2d0; max = 2.5; to = .7; }
+        else if (/^Ext Taillight(#Glass Red| Trunk#Red Glass)/.test(n) || /^Ext Trunk Lid#Glass Red/.test(n)) { col = 0xff1a10; max = 3; to = .9; }
         if (!col) return;
         o.material = o.material.clone();
         if (!o.material.emissive) return;
         o.material.emissive.setHex(col); o.material.emissiveIntensity = 0;
-        glow.push({ m: o.material, max });
+        o.material.transparent = true;
+        glow.push({ m: o.material, max, a0: o.material.opacity, to });
       });
       let lvl = 0, lt = 0;
       const lights = v => { lt = v ? 1 : 0; };
@@ -95,7 +96,7 @@
         requestAnimationFrame(frame);
         const dt = clock.getDelta();
         if (mixer) mixer.update(dt);
-        if (glow.length && lvl !== lt) { lvl += Math.sign(lt - lvl) * Math.min(Math.abs(lt - lvl), dt * 3); glow.forEach(g => { g.m.emissiveIntensity = lvl * g.max; }); }
+        if (glow.length && lvl !== lt) { lvl += Math.sign(lt - lvl) * Math.min(Math.abs(lt - lvl), dt * 3); glow.forEach(g => { g.m.emissiveIntensity = lvl * g.max; g.m.opacity = g.a0 + (g.to - g.a0) * lvl; }); }
         if (!vis || !tab) return;
         if (!drag) { g.rotation.x *= .96; vy *= .95; g.rotation.y += vy + (reduce ? 0 : .0035); }
         renderer.render(scene, cam);
