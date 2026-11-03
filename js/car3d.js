@@ -67,7 +67,7 @@
       const glow = [];
       car.traverse(o => {
         if (!o.isMesh) return;
-        const n = o.name || "";
+        const n = (o.name || "").replace(/_/g, " "); // GLTFLoader turns spaces into underscores
         let col = 0, max = 0, to = 1;
         if (/^Ext Lights#Glass Clear/.test(n)) { col = 0xfff2d0; max = 2.5; to = .7; }
         else if (/^Ext Taillight(#Glass Red| Trunk#Red Glass)/.test(n) || /^Ext Trunk Lid#Glass Red/.test(n)) { col = 0xff1a10; max = 3; to = .9; }
