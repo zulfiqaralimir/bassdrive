@@ -20,7 +20,7 @@
   function init() {
     let renderer;
     try { renderer = new T.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" }); } catch (e) { return; }
-    const W = 400, H = 220, wrap = document.createElement("div");
+    const W = 600, H = 320, wrap = document.createElement("div");
     wrap.className = "car3d"; wrap.setAttribute("aria-hidden", "true");
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     renderer.setSize(W, H);
@@ -40,7 +40,7 @@
     loader.load("models/car.glb", gltf => {
       const car = gltf.scene, box = new T.Box3().setFromObject(car), size = box.getSize(new T.Vector3()), c = box.getCenter(new T.Vector3());
       car.position.sub(c);                       // center on origin
-      const k = 3 / Math.max(size.x, size.y, size.z);
+      const k = 5.6 / Math.max(size.x, size.y, size.z);
       const g = new T.Group(); g.scale.setScalar(k); g.add(car); scene.add(g);
       cam.position.set(0, 1.1, 8.2); cam.lookAt(0, 0, 0);
       host.appendChild(wrap);
